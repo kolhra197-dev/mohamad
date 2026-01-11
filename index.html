@@ -3,73 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محفظة الأرباح الذكية</title>
+    <title>محفظة الأرباح - محمد العبيدو</title>
     <style>
         :root {
             --primary: #00ff88;
             --bg: #0f172a;
             --card: #1e293b;
+            --gold: #f3ba2f;
         }
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 15px;
         }
         .container {
             background: var(--card);
             padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             text-align: center;
-            width: 85%;
-            max-width: 380px;
+            width: 100%;
+            max-width: 400px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        h2 { color: var(--primary); margin-bottom: 1rem; }
+        h2 { color: var(--primary); margin-bottom: 0.5rem; }
         .balance-card {
             background: rgba(0, 255, 136, 0.05);
             padding: 1.5rem;
-            border-radius: 15px;
+            border-radius: 20px;
             margin: 1.5rem 0;
-            border: 1px dashed var(--primary);
+            border: 2px dashed var(--primary);
         }
-        #balance { font-size: 2.5rem; font-weight: bold; display: block; }
-        .info { font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem; }
+        #balance { font-size: 2.8rem; font-weight: bold; display: block; color: white; }
+        .withdraw-methods {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+        .method-item {
+            display: flex;
+            align-items: center;
+            justify-content:间;
+            gap: 12px;
+            font-size: 1rem;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .method-item:last-child { border-bottom: none; }
         .btn {
             background: var(--primary);
             color: #0f172a;
             border: none;
-            padding: 1rem;
-            font-size: 1.2rem;
+            padding: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
             width: 100%;
             transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 255, 136, 0.4); }
+        .alert-text {
+            font-size: 0.85rem;
+            color: #ff4d4d;
+            margin-top: 15px;
+            font-weight: bold;
+            background: rgba(255, 77, 77, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>محفظة الأرباح</h2>
-    <p class="info">اضغط أدناه لتحديث رصيدك الآن</p>
+    <h2>محفظة الأرباح الرقمية</h2>
     
     <div class="balance-card">
-        <span class="info">إجمالي الرصيد</span>
+        <span style="font-size: 1rem; color: #94a3b8;">الرصيد الكلي الحالي</span>
         <span id="balance">0.07 $</span>
+    </div>
+
+    <div class="withdraw-methods">
+        <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة في سوريا:</div>
+        <div class="method-item">⭐ شام كاش (Sham Cash)</div>
+        <div class="method-item">⭐ سيريتل كاش (Syriatel Cash)</div>
+        <div class="method-item">⭐ USDT (TRC20)</div>
     </div>
 
     <button class="btn" onclick="openAd()">تحديث الرصيد الآن ⚡</button>
 
-    <div style="margin-top: 1.5rem; font-size: 0.8rem; color: #64748b;">
-        ✓ سحب فوري | ✓ نظام آمن
+    <div class="alert-text">
+        ⚠️ الحد الأدنى للسحب هو 15.00 $
     </div>
 </div>
 
@@ -78,7 +112,6 @@
         // رابط Adsterra الخاص بك
         window.open('https://www.profitablecpmrate.com/frf3m7m0?key=8e668da9493188540be2587570889f07', '_blank');
         
-        // زيادة وهمية للتشجيع في الموقع
         let b = document.getElementById('balance');
         let current = parseFloat(b.innerText);
         b.innerText = (current + 0.01).toFixed(2) + " $";
