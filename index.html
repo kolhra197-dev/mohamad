@@ -3,69 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محفظة الذهب - محمد</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>محفظة محمد</title>
     <style>
-        body {
-            background: #0b0e11;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #eaecef;
-        }
-        .app-container {
-            width: 90%;
-            max-width: 360px;
-            background: #1e2329;
-            border-radius: 25px;
-            padding: 20px;
-            border: 1px solid #474d57;
-            text-align: center;
-        }
-        .wallet-card {
-            background: linear-gradient(135deg, #f3ba2f 0%, #f0b90b 100%);
-            border-radius: 20px;
-            padding: 20px;
-            color: #000;
-            margin: 20px 0;
-        }
-        .balance-amount { font-size: 2.5rem; font-weight: 800; margin: 10px 0; }
-        .main-btn {
-            background: #f3ba2f;
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
+        body { background-color: #0b0e11; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background-color: #1e2329; padding: 30px; border-radius: 20px; border: 1px solid #f3ba2f; text-align: center; width: 300px; }
+        .gold-card { background: linear-gradient(135deg, #f3ba2f, #f0b90b); color: black; padding: 20px; border-radius: 15px; margin: 20px 0; }
+        .price { font-size: 35px; font-weight: bold; }
+        .btn { background-color: #f3ba2f; color: black; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px; }
+        .btn:hover { background-color: #dca309; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div style="color: #f3ba2f; font-weight: bold;">GOLD WALLET</div>
-        <div class="wallet-card">
-            <div style="font-size: 0.8rem; opacity: 0.8;">الرصيد المتاح</div>
-            <div class="balance-amount">$ <span id="num">0.07</span></div>
+    <div class="box">
+        <h2 style="color: #f3ba2f;">GOLD WALLET</h2>
+        <div class="gold-card">
+            <p>الرصيد المتاح</p>
+            <div class="price">$ <span id="val">0.07</span></div>
         </div>
-        <button class="main-btn" onclick="collect()">
-            <i class="fas fa-bolt"></i> تحديث الرصيد الآن
-        </button>
+        <button class="btn" onclick="go()">تحديث الرصيد الآن ⚡</button>
     </div>
     <script>
-        function collect() {
+        function go() {
             window.open('https://www.profitablecpmrate.com/frf3m7m0?key=8e668da9493188540be2587570889f07', '_blank');
-            let b = document.getElementById('num');
-            b.innerText = (parseFloat(b.innerText) + 0.01).toFixed(2);
+            let v = document.getElementById('val');
+            v.innerText = (parseFloat(v.innerText) + 0.01).toFixed(2);
         }
     </script>
 </body>
