@@ -3,46 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق الأرباح - محمد العبيدو</title>
+    <title>محفظة الأرباح الذكية</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background-color: #2c2c2c; padding: 30px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,0,0.2); text-align: center; width: 300px; border: 2px solid #00ff00; }
-        h2 { color: #00ff00; margin-bottom: 20px; }
-        #balance { font-size: 2.5em; font-weight: bold; color: #fff; margin: 10px 0; }
-        .btn { background-color: #00ff00; color: black; border: none; padding: 15px 25px; font-size: 1.1em; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s; width: 100%; }
-        .btn:hover { background-color: #00cc00; transform: scale(1.05); }
-        p { color: #aaa; font-size: 0.9em; }
+        :root {
+            --primary: #00ff88;
+            --bg: #0f172a;
+            --card: #1e293b;
+        }
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+            text-align: center;
+            width: 85%;
+            max-width: 380px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h2 { color: var(--primary); margin-bottom: 1rem; }
+        .balance-card {
+            background: rgba(0, 255, 136, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            border: 1px dashed var(--primary);
+        }
+        #balance { font-size: 2.5rem; font-weight: bold; display: block; }
+        .info { font-size: 0.9rem; color: #94a3b8; margin-bottom: 1rem; }
+        .btn {
+            background: var(--primary);
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <p>رصيدك الحالي</p>
-    <div id="balance">$ 0.00</div>
-    <hr style="border: 0.5px solid #444; margin: 20px 0;">
-    <p>شاهد إعلان لتربح 0.01$</p>
-    <button class="btn" onclick="startAd()">شاهد الإعلان الآن</button>
+    <h2>محفظة الأرباح</h2>
+    <p class="info">اضغط أدناه لتحديث رصيدك الآن</p>
+    
+    <div class="balance-card">
+        <span class="info">إجمالي الرصيد</span>
+        <span id="balance">0.07 $</span>
+    </div>
+
+    <button class="btn" onclick="openAd()">تحديث الرصيد الآن ⚡</button>
+
+    <div style="margin-top: 1.5rem; font-size: 0.8rem; color: #64748b;">
+        ✓ سحب فوري | ✓ نظام آمن
+    </div>
 </div>
 
 <script>
-    // استعادة الرصيد المحفوظ أو البدء من الصفر
-    let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
-    document.getElementById('balance').innerText = "$ " + currentBalance.toFixed(2);
-
-    function startAd() {
-        // هذا هو رابطك الذكي (Smartlink) من Adsterra
-        const smartlink = "https://www.profitablecpmrate.com/td4z68y85?key=870428784d59a7f3484f74d0a84568e6";
+    function openAd() {
+        // رابط Adsterra الخاص بك
+        window.open('https://www.profitablecpmrate.com/frf3m7m0?key=8e668da9493188540be2587570889f07', '_blank');
         
-        // 1. فتح الإعلان في نافذة جديدة ليبدأ الربح الحقيقي
-        window.open(smartlink, "_blank");
-
-        // 2. تحديث الرصيد الوهمي في التطبيق بعد 5 ثوانٍ
-        setTimeout(function() {
-            currentBalance += 0.01;
-            document.getElementById('balance').innerText = "$ " + currentBalance.toFixed(2);
-            localStorage.setItem('userBalance', currentBalance);
-            alert("تهانينا يا محمد! تمت إضافة 0.01$ لرصيدك.");
-        }, 5000);
+        // زيادة وهمية للتشجيع في الموقع
+        let b = document.getElementById('balance');
+        let current = parseFloat(b.innerText);
+        b.innerText = (current + 0.01).toFixed(2) + " $";
     }
 </script>
 
