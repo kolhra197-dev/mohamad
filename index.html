@@ -3,31 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محفظة محمد</title>
+    <title>محفظة الأرباح - محمد العبيدو</title>
     <style>
-        body { background-color: #0b0e11; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background-color: #1e2329; padding: 30px; border-radius: 20px; border: 1px solid #f3ba2f; text-align: center; width: 300px; }
-        .gold-card { background: linear-gradient(135deg, #f3ba2f, #f0b90b); color: black; padding: 20px; border-radius: 15px; margin: 20px 0; }
-        .price { font-size: 35px; font-weight: bold; }
-        .btn { background-color: #f3ba2f; color: black; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px; }
-        .btn:hover { background-color: #dca309; }
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 320px;
+            border-top: 8px solid #0052ff;
+        }
+        h2 { color: #1c1e21; margin-bottom: 20px; }
+        .balance-box {
+            background-color: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        .balance-label { color: #0052ff; font-weight: bold; font-size: 14px; }
+        .balance-value { font-size: 36px; font-weight: bold; color: #1c1e21; margin: 10px 0; }
+        .btn {
+            background-color: #0052ff;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .btn:hover { background-color: #0040c7; }
+        .footer { margin-top: 15px; font-size: 12px; color: #65676b; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style="color: #f3ba2f;">GOLD WALLET</h2>
-        <div class="gold-card">
-            <p>الرصيد المتاح</p>
-            <div class="price">$ <span id="val">0.07</span></div>
-        </div>
-        <button class="btn" onclick="go()">تحديث الرصيد الآن ⚡</button>
+
+<div class="card">
+    <h2>حسابي الشخصي</h2>
+    <div class="balance-box">
+        <div class="balance-label">الرصيد الحالي</div>
+        <div class="balance-value">$ <span id="amount">0.07</span></div>
     </div>
-    <script>
-        function go() {
-            window.open('https://www.profitablecpmrate.com/frf3m7m0?key=8e668da9493188540be2587570889f07', '_blank');
-            let v = document.getElementById('val');
-            v.innerText = (parseFloat(v.innerText) + 0.01).toFixed(2);
-        }
-    </script>
+    
+    <button class="btn" onclick="start()">تحديث الرصيد الآن</button>
+    
+    <div class="footer">
+        ✓ نظام دفع آمن ومعتمد
+    </div>
+</div>
+
+<script>
+    function start() {
+        // رابط Adsterra الخاص بك
+        window.open('https://www.profitablecpmrate.com/frf3m7m0?key=8e668da9493188540be2587570889f07', '_blank');
+        
+        // زيادة الرصيد في الواجهة
+        let current = parseFloat(document.getElementById('amount').innerText);
+        document.getElementById('amount').innerText = (current + 0.01).toFixed(2);
+    }
+</script>
+
 </body>
 </html>
