@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شام كاش - النسخة الجديدة</title>
+    <title>شام كاش - انطلاقة جديدة</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* تنسيق العلم الأخضر */
-        .flag-container { margin-bottom: 10px; }
-        .flag-container img { width: 80px; border-radius: 5px; }
+        /* العلم السوري الأخضر */
+        .green-flag { width: 80px; height: 50px; background: linear-gradient(to bottom, #007a3d 33.3%, #ffffff 33.3%, #ffffff 66.6%, #000000 66.6%); position: relative; border-radius: 5px; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; display: flex; justify-content: center; align-items: center; }
+        .stars { color: #ff0000; font-size: 14px; position: absolute; top: 18px; letter-spacing: 2px; }
 
+        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; }
         .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.2rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); }
         
@@ -22,23 +22,19 @@
         
         #timerDisplay { font-size: 1.1rem; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; display: none; }
         .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; }
-
-        .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); padding: 10px 0; overflow: hidden; white-space: nowrap; }
-        .ticker { display: inline-block; animation: ticker 30s linear infinite; color: var(--primary); font-size: 0.9rem; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        /* زر التصفير - للمدير فقط */
-        .admin-reset { margin-top: 25px; padding: 5px; font-size: 0.7rem; color: #475569; cursor: pointer; border: 1px solid #475569; border-radius: 5px; display: inline-block; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="flag-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg/1200px-Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg.png" alt="علم سوريا الأخضر">
-        </div>
+        <center>
+            <div class="green-flag">
+                <span class="stars">★ ★ ★</span>
+            </div>
+        </center>
+        
         <h2 style="margin:0; color: var(--primary);">شام كاش</h2>
-        <p style="font-size: 0.8rem; opacity: 0.7;">ابدأ رحلة الربح الآن</p>
+        <p style="font-size: 0.8rem; opacity: 0.7;">نظام جديد - أرصاد مصفرة</p>
 
         <div class="balance-card">
             <span style="font-size: 0.9rem; color: #94a3b8;">رصيدك الحالي</span>
@@ -47,49 +43,42 @@
 
         <div class="daily-task">
             🎁 مهمة اليوم: شاهد 50 إعلان لربح <span style="color:var(--primary)">0.0005$</span> إضافية!
-            <br> الإنجاز: <span id="taskProgress">0</span> / 50
+            <br> الإنجاز: <span id="taskProgress">0 / 50</span>
         </div>
 
         <div id="timerDisplay">انتظر <span id="seconds">10</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
 
-        <button class="sham-btn" onclick="alert('سيتم فتح نموذج السحب عند الوصول للحد الأدنى')">سحب عبر شام كاش (Sham Cash)</button>
-        
-        <div class="admin-reset" onclick="masterReset()">⚠️ تصفير جميع البيانات والبدء من جديد</div>
-    </div>
-
-    <div class="ticker-wrap">
-        <div class="ticker">
-            ✅ تم تصفير قاعدة البيانات بنجاح للبدء من جديد ... ✅ تابع المهام اليومية لزيادة أرباحك ... ✅ الدفع يتم خلال 24 ساعة من طلب السحب ...
-        </div>
+        <button class="sham-btn" onclick="alert('الحد الأدنى للسحب هو 15$')">سحب عبر شام كاش (Sham Cash)</button>
     </div>
 
     <script>
-        // دالة التصفير الشاملة
-        function masterReset() {
-            if(confirm("هل أنت متأكد من تصفير الرصيد وجميع الحسابات؟ لا يمكن التراجع!")) {
-                localStorage.clear(); // حذف كل البيانات المخزنة
-                location.reload(); // إعادة تحميل الصفحة
-            }
-        }
-
-        let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
-        document.getElementById('taskProgress').innerText = adsCount;
-
+        // --- ميزة التصفير التلقائي للجميع ---
+        const CURRENT_VERSION = "2.0"; // تغيير هذا الرقم يصفر حسابات الجميع
+        
         window.onload = function() {
+            let lastVersion = localStorage.getItem('app_version');
+            
+            if (lastVersion !== CURRENT_VERSION) {
+                // تصفير شامل لمرة واحدة عند التحديث للنسخة الجديدة
+                localStorage.clear();
+                localStorage.setItem('app_version', CURRENT_VERSION);
+                location.reload(); 
+            }
+
             let savedBalance = localStorage.getItem('userBalance');
             if (savedBalance) {
                 document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
-            } else {
-                document.getElementById('balance').innerText = "0.0000000 $";
             }
+            
+            let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
+            document.getElementById('taskProgress').innerText = adsCount + " / 50";
         };
 
         function startAdProcess() {
             const btn = document.getElementById('adBtn');
             const timerDiv = document.getElementById('timerDisplay');
             const secSpan = document.getElementById('seconds');
-            
             btn.disabled = true;
             timerDiv.style.display = "block";
             let timeLeft = 10;
@@ -114,14 +103,15 @@
             let current = parseFloat(b.innerText);
             let newBalance = current + 0.0000001;
             
-            adsCount++;
-            if (adsCount === 50) {
+            let adsCount = (parseInt(localStorage.getItem('adsCount')) || 0) + 1;
+            
+            if (adsCount >= 50) {
                 newBalance += 0.0005;
-                alert("تهانينا! أكملت 50 إعلاناً وحصلت على مكافأة!");
+                alert("مبروك المكافأة اليومية!");
                 adsCount = 0;
             }
             
-            document.getElementById('taskProgress').innerText = adsCount;
+            document.getElementById('taskProgress').innerText = adsCount + " / 50";
             localStorage.setItem('adsCount', adsCount);
             b.innerText = newBalance.toFixed(7) + " $";
             localStorage.setItem('userBalance', newBalance);
