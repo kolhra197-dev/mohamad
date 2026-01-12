@@ -7,21 +7,22 @@
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
         body { font-family: sans-serif; background-color: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
-        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); }
+        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
         .balance-card { background: rgba(0, 255, 136, 0.05); padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; letter-spacing: 1px; }
         .withdraw-methods { background: rgba(255, 255, 255, 0.02); border-radius: 15px; padding: 15px; margin-bottom: 1.5rem; text-align: right; }
-        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold; border: none; display: block; font-size: 1rem; }
-        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.3s; }
+        
+        /* إصلاح الأزرار لتكون قابلة للنقر دائماً */
+        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold; border: none; display: block; position: relative; z-index: 5; }
+        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; margin-top: 10px; position: relative; z-index: 5; transition: 0.3s; }
         .btn:active { transform: scale(0.95); }
 
         /* ستايل النافذة المنبثقة */
-        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
         .modal-content { background-color: var(--card); margin: 20% auto; padding: 25px; border: 2px solid var(--gold); width: 85%; max-width: 320px; border-radius: 20px; text-align: center; position: relative; }
         .close-x { position: absolute; top: 5px; right: 15px; font-size: 30px; color: var(--gold); cursor: pointer; font-weight: bold; }
-        .modal-content p { margin: 10px 0 5px; font-size: 0.9rem; color: #cbd5e1; }
-        .modal-content input { width: 90%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
-        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; }
+        .modal-content input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
+        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -32,23 +33,21 @@
             <span id="balance">0.0000000 $</span>
         </div>
         <div class="withdraw-methods">
-            <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة (سوريا):</div>
+            <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة:</div>
             <button class="sham-btn" onclick="openShamModal()">اسحب عبر شام كاش (Sham Cash)</button>
-            <div style="font-size: 0.9rem; padding: 10px 0; opacity: 0.6;">⭐ سيريتل كاش (قريباً)</div>
+            <div style="font-size: 0.9rem; padding: 8px 0; opacity: 0.6;">⭐ سيريتل كاش (قريباً)</div>
         </div>
         <button id="updateBtn" class="btn" onclick="openAd()">مشاهدة الاعلان 💚</button>
-        <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 15px; opacity: 0.8; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
+        <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
     </div>
 
     <div id="shamModal" class="modal">
         <div class="modal-content">
             <span class="close-x" onclick="closeShamModal()">&times;</span>
-            <h3 style="color: var(--gold);">تأكيد سحب شام كاش</h3>
-            <p>1. اكتب رقم حسابك:</p>
+            <h3 style="color: var(--gold);">شام كاش</h3>
+            <p style="font-size: 0.9rem;">اكتب رقم حسابك لربطه:</p>
             <input type="number" id="accountNum" placeholder="09xxxxxxxx">
-            <p>2. اختر صورة إثبات الحساب:</p>
-            <input type="file" id="userImage" accept="image/*">
-            <button class="confirm-btn" onclick="sendToWhatsApp()">إرسال وتأكيد عبر واتساب</button>
+            <button class="confirm-btn" onclick="sendToWhatsApp()">تأكيد عبر واتساب 💬</button>
         </div>
     </div>
 
@@ -59,9 +58,31 @@
             b.innerText = (parseFloat(b.innerText) + 0.0000001).toFixed(7) + " $";
         }
 
-        function openShamModal() { document.getElementById('shamModal').style.display = "block"; }
-        function closeShamModal() { document.getElementById('shamModal').style.display = "none"; }
+        function openShamModal() { 
+            document.getElementById('shamModal').style.display = "block"; 
+        }
+
+        function closeShamModal() { 
+            document.getElementById('shamModal').style.display = "none"; 
+        }
 
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
-            if
+            if(num.length < 10) {
+                alert("يرجى إدخال رقم حساب صحيح");
+                return;
+            }
+            let myWhatsApp = "963998897823"; 
+            let message = "مرحباً محمد، أريد ربط حسابي في شام كاش.%0Aرقم الحساب: " + num;
+            alert("سيفتح الواتساب الآن.. يرجى إرسال الرسالة وإرفاق صورة الحساب يدوياً.");
+            window.open("https://wa.me/" + myWhatsApp + "?text=" + message, "_blank");
+            closeShamModal();
+        }
+
+        window.onclick = function(event) {
+            let modal = document.getElementById('shamModal');
+            if (event.target == modal) { closeShamModal(); }
+        }
+    </script>
+</body>
+</html>
