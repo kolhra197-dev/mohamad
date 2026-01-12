@@ -3,77 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شام كاش - الانطلاقة الكبرى</title>
+    <title>شام كاش - النسخة النهائية</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* تنسيق العلم الحقيقي */
-        .flag-img { width: 120px; height: auto; border-radius: 8px; border: 2px solid #fff; box-shadow: 0 0 20px rgba(0,255,136,0.3); margin-bottom: 15px; }
+        .container { background: var(--card); padding: 2.2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
+        
+        .balance-card { background: transparent; padding: 1.5rem; border-radius: 20px; margin: 1.2rem 0; border: 2px dashed var(--primary); }
+        #balance { font-size: 2.5rem; font-weight: bold; display: block; color: #fff; }
+        
+        .task-box { background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 12px; margin-bottom: 1.2rem; font-size: 0.9rem; border: 1px solid rgba(243, 186, 47, 0.3); }
 
-        .container { background: var(--card); padding: 2.2rem; border-radius: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); }
-        .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.2rem 0; border: 2px solid var(--primary); }
-        #balance { font-size: 2.5rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 15px rgba(0,255,136,0.5); }
+        .btn-ad { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.4rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2); }
+        .btn-ad:disabled { background: #475569; opacity: 0.7; }
         
-        .daily-task { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 15px; margin-bottom: 1.2rem; font-size: 0.9rem; border: 1px solid var(--gold); }
-        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 18px; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,255,136,0.3); }
-        .btn:disabled { background: #475569; opacity: 0.7; }
+        .withdraw-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; font-size: 1.1rem; }
         
-        #timerDisplay { font-size: 1.2rem; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; display: none; }
-        .sham-btn { background: var(--gold); color: #000; padding: 14px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 18px; }
+        #timer { color: #ff4d4d; font-weight: bold; margin-bottom: 8px; display: none; }
+        .warning-text { color: #ff4d4d; font-size: 0.75rem; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg/1200px-Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg.png" class="flag-img" alt="علم سوريا الأخضر">
-        
-        <h2 style="margin:0; color: var(--primary);">شام كاش</h2>
-        <p style="font-size: 0.8rem; opacity: 0.7;">تصفير شامل - ابدأ من جديد بنجاح</p>
+        <h2 style="color: var(--primary); margin-bottom: 5px;">شام كاش</h2>
+        <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 20px;">شاهد الاعلانات واربح الآن</p>
 
         <div class="balance-card">
-            <span style="font-size: 1rem; color: #94a3b8;">رصيدك المتراكم</span>
-            <span id="balance">0.0000000 $</span>
+            <span style="font-size: 0.95rem; color: #94a3b8; margin-bottom: 5px; display: block;">الرصيد المتراكم</span>
+            <span id="balance">$ 0.0000000</span>
         </div>
 
-        <div class="daily-task">
-            🎁 مهمة اليوم: شاهد 50 إعلان لربح <span style="color:var(--primary); font-weight:bold;">0.0005$</span>
-            <br> الإنجاز: <span id="taskProgress" style="color:var(--gold); font-weight:bold;">0 / 50</span>
+        <div class="task-box">
+            🎁 شاهد 50 إعلان لربح مكافأة 0.0005$
+            <br> الإنجاز الحالي: <span id="progress" style="color: var(--gold); font-weight: bold;">0 / 50</span>
         </div>
 
-        <div id="timerDisplay">انتظر <span id="seconds">10</span> ثوانٍ...</div>
-        <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
+        <div id="timer">يرجى الانتظار <span id="sec">10</span> ثانية...</div>
+        <button id="adBtn" class="btn-ad" onclick="startAd()">مشاهدة الاعلان وحصد الربح 💰</button>
 
-        <button class="sham-btn" onclick="alert('الحد الأدنى للسحب هو 15$')">سحب عبر شام كاش (Sham Cash)</button>
+        <button class="withdraw-btn" onclick="directWithdraw()">اسحب أرباحك عبر واتساب 💬</button>
+        
+        <p class="warning-text">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <script>
-        // تغيير الـ VERSION يضمن تصفير كل حسابات الناس تلقائياً
-        const VERSION = "FINAL_RESET_01"; 
-
         window.onload = function() {
-            if (localStorage.getItem('user_version') !== VERSION) {
-                localStorage.clear();
-                localStorage.setItem('user_version', VERSION);
-                location.reload(); 
-            }
-
             let savedBalance = localStorage.getItem('userBalance');
             if (savedBalance) {
-                document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
+                document.getElementById('balance').innerText = "$ " + parseFloat(savedBalance).toFixed(7);
             }
-            updateUI();
+            updateProgress();
         };
 
-        function updateUI() {
-            let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
-            document.getElementById('taskProgress').innerText = adsCount + " / 50";
+        function updateProgress() {
+            let count = localStorage.getItem('adsCount') || 0;
+            document.getElementById('progress').innerText = count + " / 50";
         }
 
-        function startAdProcess() {
+        function startAd() {
             const btn = document.getElementById('adBtn');
-            const timerDiv = document.getElementById('timerDisplay');
-            const secSpan = document.getElementById('seconds');
+            const timerDiv = document.getElementById('timer');
+            const secSpan = document.getElementById('sec');
+            
             btn.disabled = true;
             timerDiv.style.display = "block";
             let timeLeft = 10;
@@ -85,7 +78,7 @@
                 secSpan.innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
-                    addBalance();
+                    addMoney();
                     btn.disabled = false;
                     timerDiv.style.display = "none";
                     secSpan.innerText = "10";
@@ -93,23 +86,29 @@
             }, 1000);
         }
 
-        function addBalance() {
-            let b = document.getElementById('balance');
-            let current = parseFloat(b.innerText);
-            let newBalance = current + 0.0000001;
+        function addMoney() {
+            let balElem = document.getElementById('balance');
+            let currentValue = parseFloat(balElem.innerText.replace('$ ', ''));
+            let newBalance = currentValue + 0.0000001;
             
-            let adsCount = (parseInt(localStorage.getItem('adsCount')) || 0) + 1;
+            let count = (parseInt(localStorage.getItem('adsCount')) || 0) + 1;
             
-            if (adsCount >= 50) {
+            if (count >= 50) {
                 newBalance += 0.0005;
                 alert("مبروك! حصلت على مكافأة الـ 50 إعلاناً");
-                adsCount = 0;
+                count = 0;
             }
             
-            localStorage.setItem('adsCount', adsCount);
-            updateUI();
-            b.innerText = newBalance.toFixed(7) + " $";
+            localStorage.setItem('adsCount', count);
+            updateProgress();
+            balElem.innerText = "$ " + newBalance.toFixed(7);
             localStorage.setItem('userBalance', newBalance);
+        }
+
+        function directWithdraw() {
+            let currentBalance = document.getElementById('balance').innerText;
+            let message = "أهلاً، أرغب في سحب أرباحي من تطبيق شام كاش.\nرصيدي الحالي هو: " + currentBalance + "\nرقم هاتفي هو: ";
+            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
         }
     </script>
 </body>
