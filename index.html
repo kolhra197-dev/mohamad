@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محفظة الأرباح - محمد العبيدو</title>
+    <title>الربح من مشاهدة الاعلانات - محمد العبيدو</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
         body { font-family: sans-serif; background-color: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
@@ -14,13 +14,13 @@
         .withdraw-methods { background: rgba(255, 255, 255, 0.02); border-radius: 15px; padding: 15px; margin-bottom: 1.5rem; text-align: right; }
         .method-item { display: flex; align-items: center; gap: 12px; font-size: 1rem; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        .btn.clicked { background: var(--gold); transform: scale(0.95); }
         .alert-text { font-size: 0.85rem; color: #ff4d4d; margin-top: 15px; font-weight: bold; background: rgba(255, 77, 77, 0.1); padding: 8px; border-radius: 8px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>محفظة الأرباح الرقمية</h2>
+        <h2>الربح من مشاهدة الاعلانات</h2>
         <div class="balance-card">
             <span style="font-size: 1rem; color: #94a3b8;">الرصيد المتراكم</span>
             <span id="balance">0.0000000 $</span>
@@ -31,18 +31,25 @@
             <div class="method-item">⭐ سيريتل كاش (Syriatel Cash)</div>
             <div class="method-item">⭐ USDT (TRC20)</div>
         </div>
-        <button class="btn" onclick="openAd()">تحديث الرصيد الآن ⚡</button>
+        <button id="updateBtn" class="btn" onclick="openAd()">مشاهدة الاعلان 💚</button>
         <div class="alert-text">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
     </div>
     <script>
         function openAd() {
-            // رابط الأرباح الخاص بمحمد العبيدو الفعال حالياً
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
             
+            let btn = document.getElementById('updateBtn');
+            btn.classList.add('clicked');
+            btn.innerText = "جاري التحميل... ⏳";
+            
+            setTimeout(() => {
+                btn.classList.remove('clicked');
+                btn.innerText = "مشاهدة الاعلان 💚";
+            }, 1000);
+
             let b = document.getElementById('balance');
             let current = parseFloat(b.innerText);
-            // الزيادة الآن موزونة لتناسب 7 خانات عشرية لتبدو حركة الرصيد سلسة
-            b.innerText = (current + 0.0000350).toFixed(7) + " $";
+            b.innerText = (current + 0.0000001).toFixed(7) + " $";
         }
     </script>
 </body>
