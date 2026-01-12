@@ -14,6 +14,11 @@
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .btn:disabled { background: #475569; opacity: 0.7; }
         .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; }
+        
+        /* تصميم المربع المنبثق (Modal) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: var(--card); margin: 20% auto; padding: 20px; border: 2px solid var(--gold); width: 80%; max-width: 300px; border-radius: 20px; text-align: center; }
+        .modal-input { width: 90%; padding: 10px; margin: 15px 0; border-radius: 10px; border: 1px solid #ccc; text-align: center; font-size: 1rem; }
         .timer { color: #ff4d4d; margin-top: 10px; font-weight: bold; display: none; }
     </style>
 </head>
@@ -39,8 +44,18 @@
         <div id="timerDisplay" class="timer">انتظر <span id="seconds">5</span> ثوانٍ لضمان الربح...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
         
-        <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
+        <button class="sham-btn" onclick="openWithdrawModal()">سحب عبر شام كاش (Sham Cash)</button>
         <p style="color: #ff4d4d; font-size: 0.85rem; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
+    </div>
+
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: var(--gold); margin-top: 0;">طلب سحب أرباح</h3>
+            <p style="font-size: 0.8rem;">أدخل رقم حسابك في شام كاش:</p>
+            <input type="number" id="shamAccount" class="modal-input" placeholder="09xxxxxxxx">
+            <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال عبر الواتس اب</button>
+            <button onclick="closeWithdrawModal()" style="background:none; border:none; color:white; margin-top:15px; cursor:pointer; font-size: 0.8rem;">إلغاء</button>
+        </div>
     </div>
 
     <script>
@@ -64,13 +79,20 @@
             }
         }
 
+        function openWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'block';
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').style.display = 'none';
+        }
+
         function startAdProcess() {
             const btn = document.getElementById('adBtn');
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
             let timeLeft = 5; 
             
-            // إعادة رابطك الأصلي هنا
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
 
             let countdown = setInterval(() => {
@@ -116,6 +138,21 @@
             localStorage.setItem('userBalance', newBalance);
             document.getElementById('balance').innerText = newBalance + " $";
             updateUI();
+        }
+
+        function sendToWhatsApp() {
+            const account = document.getElementById('shamAccount').value;
+            const balance = document.getElementById('balance').innerText;
+            
+            if (account.length < 10) {
+                alert("يرجى إدخال رقم حساب صحيح");
+                return;
+            }
+
+            const message = `طلب سحب أرباح جديد من الموقع:\nالحساب: ${account}\nالرصيد: ${balance}`;
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/963998897823?text=${encodedMessage}`, '_blank');
+            closeWithdrawModal();
         }
 
         function loadBalance() {
