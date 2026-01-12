@@ -33,35 +33,29 @@
         </div>
 
         <div class="task-box">
-            🎁 <b>المهمة 1:</b> شاهد 50 إعلان لربح <span style="color:var(--primary)">0.0010$</span>
+            🎁 <b>المهمة 1:</b> 50 إعلان = <span style="color:var(--primary)">0.0010$</span>
             <br> الإنجاز: <span id="task1Progress" style="color:var(--gold)">0</span> / 50
-        </div>
-        
-        <div class="task-box">
-            🔥 <b>المهمة 2:</b> شاهد 100 إعلان لربح <span style="color:var(--primary)">0.0030$</span>
-            <br> الإنجاز: <span id="task2Progress" style="color:var(--gold)">0</span> / 100
         </div>
 
         <div class="ref-section">
-            <span style="font-size: 0.8rem; color: var(--primary);">👥 مهمة الإحالة:</span>
-            <p style="font-size: 0.75rem; margin: 5px 0;">اربح <b style="color:var(--gold)">0.0005$</b> عن كل صديق يشاهد 10 إعلانات</p>
+            <span style="font-size: 0.8rem; color: var(--primary);">👥 شارك الموقع:</span>
+            <p style="font-size: 0.75rem; margin: 5px 0;">أرسل الرابط لأصدقائك ليدعموك في زيادة المشاهدات</p>
             <div class="ref-input-group">
                 <input type="text" id="refLink" class="ref-input" value="" readonly>
                 <button class="copy-btn" onclick="copyRef()">نسخ</button>
             </div>
         </div>
 
-        <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-top:10px; font-weight:bold;">انتظر <span id="seconds">10</span> ثوانٍ...</div>
+        <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-top:10px; font-weight:bold;">انتظر <span id="seconds">3</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
         
         <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
-        <p style="color: #ff4d4d; font-size: 0.75rem; margin-top: 10px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div id="shamModal" class="modal">
         <div class="modal-content">
             <h3 style="color: var(--gold);">سحب الأرباح</h3>
-            <input type="number" id="accountNum" placeholder="09xxxxxxxx">
+            <input type="number" id="accountNum" placeholder="رقم الموبايل">
             <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال بصمة السحب</button>
             <button onclick="document.getElementById('shamModal').style.display='none'" style="background:none; border:none; color:white; margin-top:10px; cursor:pointer;">إلغاء</button>
         </div>
@@ -71,39 +65,19 @@
         const S_KEY = "SECRET_PRO_SHAM_2026"; 
 
         window.onload = function() {
-            // توليد رابط إحالة فريد للمستخدم (بناءً على بصمة بسيطة)
-            let userSlug = localStorage.getItem('userSlug') || Math.random().toString(36).substring(7);
-            localStorage.setItem('userSlug', userSlug);
-            document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + userSlug;
-
-            // التحقق من وجود مُحيل (Referrer)
-            const urlParams = new URLSearchParams(window.location.search);
-            const ref = urlParams.get('ref');
-            if (ref && !localStorage.getItem('referredBy')) {
-                localStorage.setItem('referredBy', ref);
-                localStorage.setItem('refTaskCount', 0); // عداد خاص لمهمة الصديق
-            }
+            let myID = localStorage.getItem('myID') || "ID" + Math.floor(Math.random() * 90000);
+            localStorage.setItem('myID', myID);
+            document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + myID;
 
             loadBalance();
             updateUI();
         };
 
-        function loadBalance() {
-            let savedBalance = localStorage.getItem('userBalance') || "0.0000000";
-            let savedHash = localStorage.getItem('balanceHash');
-            if (savedHash && savedHash !== btoa(savedBalance + S_KEY)) {
-                localStorage.clear();
-                location.reload();
-            } else {
-                document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
-            }
-        }
-
         function startAdProcess() {
             const btn = document.getElementById('adBtn');
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
-            let timeLeft = 10;
+            let timeLeft = 3; // تعديل الوقت إلى 3 ثوانٍ
             
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
 
@@ -115,62 +89,52 @@
                     addBalance();
                     btn.disabled = false;
                     document.getElementById('timerDisplay').style.display = "none";
-                    document.getElementById('seconds').innerText = 10;
+                    document.getElementById('seconds').innerText = 3;
                 }
             }, 1000);
         }
 
         function addBalance() {
             let current = parseFloat(document.getElementById('balance').innerText);
-            let rewardPerAd = 0.000008; 
+            let reward = 0.000008; 
             
-            // تحديث عدادات المهام الشخصية
             let c1 = (parseInt(localStorage.getItem('count1')) || 0) + 1;
-            let c2 = (parseInt(localStorage.getItem('count2')) || 0) + 1;
-
-            if (c1 >= 50) { rewardPerAd += 0.001; c1 = 0; }
-            if (c2 >= 100) { rewardPerAd += 0.003; c2 = 0; }
-
-            // --- نظام الإحالة (الشرط الجديد: 10 إعلانات) ---
-            if (localStorage.getItem('referredBy')) {
-                let refCount = (parseInt(localStorage.getItem('refTaskCount')) || 0) + 1;
-                localStorage.setItem('refTaskCount', refCount);
-                
-                if (refCount === 10) {
-                    // هنا يتم إعطاء الجائزة لأن الزائر الجديد شاهد 10 إعلانات
-                    rewardPerAd += 0.0005; 
-                    alert("تهانينا! لقد دعمت صديقك وحصل هو على مكافأة الإحالة.");
-                }
-            }
-
-            let newBalance = (current + rewardPerAd).toFixed(7);
+            if (c1 >= 50) { reward += 0.001; c1 = 0; }
             localStorage.setItem('count1', c1);
-            localStorage.setItem('count2', c2);
+
+            let newBalance = (current + reward).toFixed(7);
             localStorage.setItem('userBalance', newBalance);
             localStorage.setItem('balanceHash', btoa(newBalance + S_KEY));
             document.getElementById('balance').innerText = newBalance + " $";
             updateUI();
         }
 
+        function sendToWhatsApp() {
+            let num = document.getElementById('accountNum').value;
+            let bValue = document.getElementById('balance').innerText.replace(' $', '');
+            
+            let message = "طلب سحب جديد%0A";
+            message += "الحساب: " + num + "%0A";
+            message += "الرصيد: " + bValue + "$%0A";
+            message += "البصمة: [" + btoa(bValue + S_KEY) + "]";
+            
+            window.open("https://wa.me/963998897823?text=" + message, "_blank");
+        }
+
+        function loadBalance() {
+            let savedBalance = localStorage.getItem('userBalance') || "0.0000000";
+            document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
+        }
+
         function updateUI() {
             document.getElementById('task1Progress').innerText = localStorage.getItem('count1') || 0;
-            document.getElementById('task2Progress').innerText = localStorage.getItem('count2') || 0;
         }
 
         function copyRef() {
             const copyText = document.getElementById("refLink");
             copyText.select();
             document.execCommand("copy");
-            alert("تم نسخ رابط الإحالة! شاركه واربح 0.0005$ عندما يشاهد صديقك 10 إعلانات.");
-        }
-
-        function sendToWhatsApp() {
-            let num = document.getElementById('accountNum').value;
-            let bValue = document.getElementById('balance').innerText.replace(' $', '');
-            if(num.length < 8) { alert("رقم الحساب خطأ"); return; }
-            let secureToken = btoa(bValue + ":" + S_KEY); 
-            let message = "طلب سحب جديد%0Aالحساب: " + num + "%0Aالبصمة الرقمية: [" + secureToken + "]";
-            window.open("https://wa.me/963998897823?text=" + message, "_blank");
+            alert("تم نسخ الرابط! شاركه مع أصدقائك لدعم الموقع.");
         }
     </script>
 </body>
