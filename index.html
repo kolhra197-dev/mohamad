@@ -23,25 +23,20 @@
 
     <div class="container">
         <h2 style="margin:0; color: var(--primary); font-size: 1.5rem;">شاهد واربح بكل سهولة</h2>
-        
         <div class="balance-card">
             <span style="font-size: 0.85rem; color: #94a3b8;">رصيدك الحالي</span>
             <span id="balance">0.0000000 $</span>
         </div>
-
         <div class="task-box">
             🎁 <b>المهمة 1:</b> شاهد 50 إعلان لربح <span style="color:var(--primary)">0.0010$</span>
             <br> الإنجاز: <span id="task1Progress" style="color:var(--gold)">0</span> / 50
         </div>
-
         <div class="task-box">
             🔥 <b>المهمة 2:</b> شاهد 100 إعلان لربح <span style="color:var(--primary)">0.0030$</span>
             <br> الإنجاز: <span id="task2Progress" style="color:var(--gold)">0</span> / 100
         </div>
-
         <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-bottom:10px; font-weight:bold;">انتظر <span id="seconds">10</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
-        
         <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
         <p style="color: #ff4d4d; font-size: 0.75rem; margin-top: 10px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
@@ -49,24 +44,19 @@
     <div id="shamModal" class="modal">
         <div class="modal-content">
             <h3 style="color: var(--gold);">سحب الأرباح</h3>
-            <p style="font-size: 0.8rem; color: #ccc;">أدخل رقم حسابك لإرسال الأرباح:</p>
             <input type="number" id="accountNum" placeholder="09xxxxxxxx">
-            <button class="btn" style="font-size: 1rem; padding: 10px;" onclick="sendToWhatsApp()">تأكيد وإرسال للواتساب</button>
+            <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال بصمة السحب</button>
             <button onclick="document.getElementById('shamModal').style.display='none'" style="background:none; border:none; color:white; margin-top:10px; cursor:pointer;">إلغاء</button>
         </div>
     </div>
 
     <script>
-        // مفتاح تشفير لضمان عدم التلاعب بالرصيد وتصفير الحسابات القديمة
-        const S_KEY = "PRO_REVENUE_50_PERCENT_V3"; 
-
-        function getHash(val) { return btoa(val + S_KEY); }
+        const S_KEY = "SECRET_PRO_SHAM_2026"; 
 
         window.onload = function() {
             let savedBalance = localStorage.getItem('userBalance') || "0.0000000";
             let savedHash = localStorage.getItem('balanceHash');
-
-            if (savedHash && savedHash !== getHash(savedBalance)) {
+            if (savedHash && savedHash !== btoa(savedBalance + S_KEY)) {
                 localStorage.clear();
                 location.reload();
             } else {
@@ -85,10 +75,7 @@
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
             let timeLeft = 10;
-            
-            // رابط الإعلان الخاص بك من Adsterra
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
-
             let countdown = setInterval(() => {
                 timeLeft--;
                 document.getElementById('seconds').innerText = timeLeft;
@@ -103,43 +90,31 @@
 
         function addBalance() {
             let current = parseFloat(document.getElementById('balance').innerText);
-            
-            // الربح الأساسي لكل إعلان واحد ليعادل 50% من الـ CPM الخاص بك
             let rewardPerAd = 0.000008; 
-
             let c1 = (parseInt(localStorage.getItem('count1')) || 0) + 1;
             let c2 = (parseInt(localStorage.getItem('count2')) || 0) + 1;
 
-            // إضافة جوائز المهام
-            if (c1 >= 50) { 
-                rewardPerAd += 0.0010; 
-                c1 = 0; 
-                alert("ممتاز! حصلت على جائزة الـ 50 إعلان: 0.001$"); 
-            }
-            if (c2 >= 100) { 
-                rewardPerAd += 0.0030; 
-                c2 = 0; 
-                alert("كفو! حصلت على الجائزة الكبرى للـ 100 إعلان: 0.003$"); 
-            }
+            if (c1 >= 50) { rewardPerAd += 0.001; c1 = 0; }
+            if (c2 >= 100) { rewardPerAd += 0.003; c2 = 0; }
 
             let newBalance = (current + rewardPerAd).toFixed(7);
-            
             localStorage.setItem('count1', c1);
             localStorage.setItem('count2', c2);
             localStorage.setItem('userBalance', newBalance);
-            localStorage.setItem('balanceHash', getHash(newBalance));
-            
+            localStorage.setItem('balanceHash', btoa(newBalance + S_KEY));
             document.getElementById('balance').innerText = newBalance + " $";
             updateUI();
         }
 
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
-            let bStr = document.getElementById('balance').innerText.replace(' $', '');
-            if(num.length < 8) { alert("رقم الحساب المدخل غير صحيح"); return; }
+            let bValue = document.getElementById('balance').innerText.replace(' $', '');
+            if(num.length < 8) { alert("رقم الحساب خطأ"); return; }
             
-            let verifyCode = getHash(bStr).substring(0, 8);
-            let message = "طلب سحب أرباح جديد%0Aالحساب: " + num + "%0Aالرصيد: " + bStr + "$%0Aرمز الأمان: " + verifyCode;
+            // تشفير الرصيد مع المفتاح السري لعمل "بصمة رقمية"
+            let secureToken = btoa(bValue + ":" + S_KEY); 
+
+            let message = "طلب سحب جديد%0Aالحساب: " + num + "%0Aالبصمة الرقمية: [" + secureToken + "]";
             window.open("https://wa.me/963998897823?text=" + message, "_blank");
         }
     </script>
