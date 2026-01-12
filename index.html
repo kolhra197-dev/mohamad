@@ -11,6 +11,10 @@
         .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.2rem; border-radius: 20px; margin: 1rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
         .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid var(--gold); text-align: right; }
+        .ref-section { background: rgba(0, 255, 136, 0.05); border: 1px solid var(--primary); padding: 15px; border-radius: 15px; margin-top: 15px; }
+        .ref-input-group { display: flex; margin-top: 10px; gap: 5px; }
+        .ref-input { flex: 1; font-size: 0.7rem; padding: 8px; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; text-align: left; }
+        .copy-btn { background: var(--primary); color: #000; border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .btn:disabled { background: #475569; opacity: 0.7; }
         .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; }
@@ -27,16 +31,29 @@
             <span style="font-size: 0.85rem; color: #94a3b8;">رصيدك الحالي</span>
             <span id="balance">0.0000000 $</span>
         </div>
+
         <div class="task-box">
             🎁 <b>المهمة 1:</b> شاهد 50 إعلان لربح <span style="color:var(--primary)">0.0010$</span>
             <br> الإنجاز: <span id="task1Progress" style="color:var(--gold)">0</span> / 50
         </div>
+        
         <div class="task-box">
             🔥 <b>المهمة 2:</b> شاهد 100 إعلان لربح <span style="color:var(--primary)">0.0030$</span>
             <br> الإنجاز: <span id="task2Progress" style="color:var(--gold)">0</span> / 100
         </div>
-        <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-bottom:10px; font-weight:bold;">انتظر <span id="seconds">10</span> ثوانٍ...</div>
+
+        <div class="ref-section">
+            <span style="font-size: 0.8rem; color: var(--primary);">👥 مهمة الإحالة:</span>
+            <p style="font-size: 0.75rem; margin: 5px 0;">اربح <b style="color:var(--gold)">0.0005$</b> عن كل صديق يشاهد 10 إعلانات</p>
+            <div class="ref-input-group">
+                <input type="text" id="refLink" class="ref-input" value="" readonly>
+                <button class="copy-btn" onclick="copyRef()">نسخ</button>
+            </div>
+        </div>
+
+        <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-top:10px; font-weight:bold;">انتظر <span id="seconds">10</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
+        
         <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
         <p style="color: #ff4d4d; font-size: 0.75rem; margin-top: 10px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
@@ -54,6 +71,24 @@
         const S_KEY = "SECRET_PRO_SHAM_2026"; 
 
         window.onload = function() {
+            // توليد رابط إحالة فريد للمستخدم (بناءً على بصمة بسيطة)
+            let userSlug = localStorage.getItem('userSlug') || Math.random().toString(36).substring(7);
+            localStorage.setItem('userSlug', userSlug);
+            document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + userSlug;
+
+            // التحقق من وجود مُحيل (Referrer)
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            if (ref && !localStorage.getItem('referredBy')) {
+                localStorage.setItem('referredBy', ref);
+                localStorage.setItem('refTaskCount', 0); // عداد خاص لمهمة الصديق
+            }
+
+            loadBalance();
+            updateUI();
+        };
+
+        function loadBalance() {
             let savedBalance = localStorage.getItem('userBalance') || "0.0000000";
             let savedHash = localStorage.getItem('balanceHash');
             if (savedHash && savedHash !== btoa(savedBalance + S_KEY)) {
@@ -62,12 +97,6 @@
             } else {
                 document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
             }
-            updateUI();
-        };
-
-        function updateUI() {
-            document.getElementById('task1Progress').innerText = localStorage.getItem('count1') || 0;
-            document.getElementById('task2Progress').innerText = localStorage.getItem('count2') || 0;
         }
 
         function startAdProcess() {
@@ -75,7 +104,9 @@
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
             let timeLeft = 10;
+            
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
+
             let countdown = setInterval(() => {
                 timeLeft--;
                 document.getElementById('seconds').innerText = timeLeft;
@@ -84,6 +115,7 @@
                     addBalance();
                     btn.disabled = false;
                     document.getElementById('timerDisplay').style.display = "none";
+                    document.getElementById('seconds').innerText = 10;
                 }
             }, 1000);
         }
@@ -91,11 +123,25 @@
         function addBalance() {
             let current = parseFloat(document.getElementById('balance').innerText);
             let rewardPerAd = 0.000008; 
+            
+            // تحديث عدادات المهام الشخصية
             let c1 = (parseInt(localStorage.getItem('count1')) || 0) + 1;
             let c2 = (parseInt(localStorage.getItem('count2')) || 0) + 1;
 
             if (c1 >= 50) { rewardPerAd += 0.001; c1 = 0; }
             if (c2 >= 100) { rewardPerAd += 0.003; c2 = 0; }
+
+            // --- نظام الإحالة (الشرط الجديد: 10 إعلانات) ---
+            if (localStorage.getItem('referredBy')) {
+                let refCount = (parseInt(localStorage.getItem('refTaskCount')) || 0) + 1;
+                localStorage.setItem('refTaskCount', refCount);
+                
+                if (refCount === 10) {
+                    // هنا يتم إعطاء الجائزة لأن الزائر الجديد شاهد 10 إعلانات
+                    rewardPerAd += 0.0005; 
+                    alert("تهانينا! لقد دعمت صديقك وحصل هو على مكافأة الإحالة.");
+                }
+            }
 
             let newBalance = (current + rewardPerAd).toFixed(7);
             localStorage.setItem('count1', c1);
@@ -106,14 +152,23 @@
             updateUI();
         }
 
+        function updateUI() {
+            document.getElementById('task1Progress').innerText = localStorage.getItem('count1') || 0;
+            document.getElementById('task2Progress').innerText = localStorage.getItem('count2') || 0;
+        }
+
+        function copyRef() {
+            const copyText = document.getElementById("refLink");
+            copyText.select();
+            document.execCommand("copy");
+            alert("تم نسخ رابط الإحالة! شاركه واربح 0.0005$ عندما يشاهد صديقك 10 إعلانات.");
+        }
+
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
             let bValue = document.getElementById('balance').innerText.replace(' $', '');
             if(num.length < 8) { alert("رقم الحساب خطأ"); return; }
-            
-            // تشفير الرصيد مع المفتاح السري لعمل "بصمة رقمية"
             let secureToken = btoa(bValue + ":" + S_KEY); 
-
             let message = "طلب سحب جديد%0Aالحساب: " + num + "%0Aالبصمة الرقمية: [" + secureToken + "]";
             window.open("https://wa.me/963998897823?text=" + message, "_blank");
         }
