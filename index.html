@@ -37,9 +37,14 @@
             <br> الإنجاز: <span id="task1Progress" style="color:var(--gold)">0</span> / 50
         </div>
 
+        <div class="task-box">
+            🔥 <b>المهمة 2:</b> 100 إعلان = <span style="color:var(--primary)">0.0500$</span>
+            <br> الإنجاز: <span id="task2Progress" style="color:var(--gold)">0</span> / 100
+        </div>
+
         <div class="ref-section">
             <span style="font-size: 0.8rem; color: var(--primary);">👥 شارك الموقع:</span>
-            <p style="font-size: 0.75rem; margin: 5px 0;">أرسل الرابط لأصدقائك ليدعموك في زيادة المشاهدات</p>
+            <p style="font-size: 0.75rem; margin: 5px 0;">أرسل الرابط لأصدقائك لدعم الموقع</p>
             <div class="ref-input-group">
                 <input type="text" id="refLink" class="ref-input" value="" readonly>
                 <button class="copy-btn" onclick="copyRef()">نسخ</button>
@@ -50,6 +55,7 @@
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
         
         <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
+        <p style="color: #ff4d4d; font-size: 0.85rem; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div id="shamModal" class="modal">
@@ -77,7 +83,7 @@
             const btn = document.getElementById('adBtn');
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
-            let timeLeft = 3; // تعديل الوقت إلى 3 ثوانٍ
+            let timeLeft = 3;
             
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
 
@@ -99,8 +105,13 @@
             let reward = 0.000008; 
             
             let c1 = (parseInt(localStorage.getItem('count1')) || 0) + 1;
-            if (c1 >= 50) { reward += 0.001; c1 = 0; }
+            let c2 = (parseInt(localStorage.getItem('count2')) || 0) + 1;
+
+            if (c1 >= 50) { reward += 0.0010; c1 = 0; }
+            if (c2 >= 100) { reward += 0.0500; c2 = 0; }
+
             localStorage.setItem('count1', c1);
+            localStorage.setItem('count2', c2);
 
             let newBalance = (current + reward).toFixed(7);
             localStorage.setItem('userBalance', newBalance);
@@ -112,6 +123,7 @@
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
             let bValue = document.getElementById('balance').innerText.replace(' $', '');
+            if(num.length < 8) { alert("رقم الحساب خطأ"); return; }
             
             let message = "طلب سحب جديد%0A";
             message += "الحساب: " + num + "%0A";
@@ -128,13 +140,14 @@
 
         function updateUI() {
             document.getElementById('task1Progress').innerText = localStorage.getItem('count1') || 0;
+            document.getElementById('task2Progress').innerText = localStorage.getItem('count2') || 0;
         }
 
         function copyRef() {
             const copyText = document.getElementById("refLink");
             copyText.select();
             document.execCommand("copy");
-            alert("تم نسخ الرابط! شاركه مع أصدقائك لدعم الموقع.");
+            alert("تم نسخ الرابط! شاركه لدعم الموقع.");
         }
     </script>
 </body>
