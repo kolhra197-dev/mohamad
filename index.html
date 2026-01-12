@@ -3,50 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الربح من مشاهدة الاعلانات - محمد العبيدو</title>
+    <title>شام كاش - الربح من الإعلانات</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
-        body { font-family: sans-serif; background-color: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
-        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
-        .balance-card { background: rgba(0, 255, 136, 0.05); padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 2px dashed var(--primary); }
-        #balance { font-size: 2.2rem; font-weight: bold; display: block; letter-spacing: 1px; }
-        .withdraw-methods { background: rgba(255, 255, 255, 0.02); border-radius: 15px; padding: 15px; margin-bottom: 1.5rem; text-align: right; }
-        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold; border: none; display: block; position: relative; z-index: 5; }
-        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; margin-top: 10px; position: relative; z-index: 5; }
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
-        .modal-content { background-color: var(--card); margin: 20% auto; padding: 25px; border: 2px solid var(--gold); width: 85%; max-width: 320px; border-radius: 20px; text-align: center; position: relative; }
-        .close-x { position: absolute; top: 5px; right: 15px; font-size: 30px; color: var(--gold); cursor: pointer; font-weight: bold; }
-        .modal-content input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
-        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+        
+        .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 2px dashed var(--primary); position: relative; }
+        #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        
+        .daily-task { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 12px; margin-bottom: 1rem; font-size: 0.85rem; border: 1px solid var(--gold); }
+        #taskProgress { color: var(--gold); font-weight: bold; }
+
+        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.2rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; position: relative; overflow: hidden; transition: 0.3s; }
+        .btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.7; }
+        
+        #timerDisplay { font-size: 1.1rem; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; display: none; }
+
+        .withdraw-section { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; margin-top: 20px; }
+        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; }
+
+        /* شريط السحوبات الأخيرة */
+        .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); padding: 10px 0; overflow: hidden; white-space: nowrap; }
+        .ticker { display: inline-block; animation: ticker 30s linear infinite; color: var(--primary); font-size: 0.9rem; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* النافذة المنبثقة */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+        .modal-content { background: var(--card); margin: 20% auto; padding: 25px; border: 2px solid var(--gold); width: 85%; max-width: 320px; border-radius: 20px; text-align: center; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
+        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h2 style="color: var(--primary);">الربح من مشاهدة الاعلانات</h2>
+        <h2 style="margin:0; color: var(--primary);">شام كاش 🇸🇾</h2>
+        <p style="font-size: 0.8rem; opacity: 0.7;">شاهد واربح بكل سهولة</p>
+
         <div class="balance-card">
-            <span style="font-size: 1rem; color: #94a3b8;">الرصيد المتراكم</span>
+            <span style="font-size: 0.9rem; color: #94a3b8;">رصيدك الحالي</span>
             <span id="balance">0.0000000 $</span>
         </div>
-        <div class="withdraw-methods">
-            <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة:</div>
-            <button class="sham-btn" onclick="openShamModal()">اسحب عبر شام كاش (Sham Cash)</button>
+
+        <div class="daily-task">
+            🎁 مهمة اليوم: شاهد 50 إعلان لربح <span style="color:var(--primary)">0.0005$</span> إضافية!
+            <br> الإنجاز: <span id="taskProgress">0</span> / 50
         </div>
-        <button id="updateBtn" class="btn" onclick="openAd()">مشاهدة الاعلان 💚</button>
-        <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
+
+        <div id="timerDisplay">انتظر <span id="seconds">10</span> ثوانٍ...</div>
+        <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
+
+        <div class="withdraw-section">
+            <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
+            <p style="font-size: 0.7rem; color: #ff4d4d; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
+        </div>
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            ✅ مستخدم من دمشق سحب 15.20$ عبر شام كاش منذ 5 دقائق ... 
+            ✅ تم معالجة طلب سحب بقيمة 20.00$ لمستخدم من حلب ... 
+            ✅ مبروك! أحد المستخدمين أكمل المهمة اليومية وحصل على المكافأة ...
+            ✅ سيريتل كاش ستتوفر قريباً كخيار سحب إضافي ...
+        </div>
     </div>
 
     <div id="shamModal" class="modal">
         <div class="modal-content">
-            <span class="close-x" onclick="closeShamModal()">&times;</span>
-            <h3 style="color: var(--gold);">شام كاش</h3>
-            <p style="font-size: 0.9rem;">اكتب رقم حسابك لربطه:</p>
+            <h3 style="color: var(--gold); margin-top:0;">شام كاش</h3>
+            <p style="font-size: 0.85rem;">أدخل رقم حسابك لإرسال الأرباح:</p>
             <input type="number" id="accountNum" placeholder="09xxxxxxxx">
-            <button class="confirm-btn" onclick="sendToWhatsApp()">تأكيد عبر واتساب 💬</button>
+            <button class="confirm-btn" onclick="sendToWhatsApp()">تأكيد وفتح واتساب</button>
+            <button style="background:none; border:none; color:white; margin-top:10px; cursor:pointer;" onclick="document.getElementById('shamModal').style.display='none'">إلغاء</button>
         </div>
     </div>
 
     <script>
-        // حفظ الرصيد في ذاكرة الهاتف
+        let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
+        document.getElementById('taskProgress').innerText = adsCount;
+
         window.onload = function() {
             let savedBalance = localStorage.getItem('userBalance');
             if (savedBalance) {
@@ -54,42 +91,62 @@
             }
         };
 
-        function openAd() {
+        function startAdProcess() {
+            const btn = document.getElementById('adBtn');
+            const timerDiv = document.getElementById('timerDisplay');
+            const secSpan = document.getElementById('seconds');
+            
+            btn.disabled = true;
+            timerDiv.style.display = "block";
+            let timeLeft = 10;
+
+            // فتح الإعلان في نافذة جديدة
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
+
+            let countdown = setInterval(() => {
+                timeLeft--;
+                secSpan.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    addBalance();
+                    btn.disabled = false;
+                    timerDiv.style.display = "none";
+                    secSpan.innerText = "10";
+                }
+            }, 1000);
+        }
+
+        function addBalance() {
             let b = document.getElementById('balance');
             let current = parseFloat(b.innerText);
             let newBalance = current + 0.0000001;
+            
+            // تحديث مهمة الـ 50 إعلان
+            adsCount++;
+            if (adsCount === 50) {
+                newBalance += 0.0005; // إضافة المكافأة
+                alert("تهانينا! لقد أكملت 50 إعلاناً اليوم وحصلت على مكافأة 0.0005$ إضافية 🥳");
+                adsCount = 0; // إعادة العداد للغد
+            }
+            
+            document.getElementById('taskProgress').innerText = adsCount;
+            localStorage.setItem('adsCount', adsCount);
+            
             b.innerText = newBalance.toFixed(7) + " $";
             localStorage.setItem('userBalance', newBalance);
         }
 
-        function openShamModal() { document.getElementById('shamModal').style.display = "block"; }
-        function closeShamModal() { document.getElementById('shamModal').style.display = "none"; }
-
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
-            let b = document.getElementById('balance').innerText;
-            let balanceNumeric = parseFloat(b);
+            let b = parseFloat(document.getElementById('balance').innerText);
+            if(num.length < 10) { alert("رقم الحساب غير صحيح"); return; }
 
-            if(num.length < 10) {
-                alert("يرجى إدخال رقم حساب صحيح");
-                return;
-            }
-
-            // نظام تشفير الرصيد (الرصيد مضروب في 100)
-            let encryptedCode = (balanceNumeric * 100).toFixed(2);
-
+            // نظام التشفير (الرصيد * 100)
+            let verifyCode = (b * 100).toFixed(2);
             let myWhatsApp = "963998897823"; 
-            let message = "طلب سحب أرباح%0Aرقم الحساب: " + num + "%0Aرمز التحقق الخاص بي: ( " + encryptedCode + " )";
-
-            alert("سيفتح الواتساب الآن.. يرجى إرسال الرسالة كما هي دون تعديل الرموز لضمان قبول طلبك.");
+            let message = "طلب سحب أرباح جديد%0Aالحساب: " + num + "%0Aرمز الأمان المشفر: " + verifyCode;
+            
             window.open("https://wa.me/" + myWhatsApp + "?text=" + message, "_blank");
-            closeShamModal();
-        }
-
-        window.onclick = function(event) {
-            let modal = document.getElementById('shamModal');
-            if (event.target == modal) { closeShamModal(); }
         }
     </script>
 </body>
