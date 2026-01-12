@@ -11,16 +11,10 @@
         .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.2rem; border-radius: 20px; margin: 1rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
         .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid var(--gold); text-align: right; }
-        .ref-section { background: rgba(0, 255, 136, 0.05); border: 1px solid var(--primary); padding: 15px; border-radius: 15px; margin-top: 15px; }
-        .ref-input-group { display: flex; margin-top: 10px; gap: 5px; }
-        .ref-input { flex: 1; font-size: 0.7rem; padding: 8px; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; text-align: left; }
-        .copy-btn { background: var(--primary); color: #000; border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .btn:disabled { background: #475569; opacity: 0.7; }
         .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; }
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
-        .modal-content { background: var(--card); margin: 20% auto; padding: 25px; border: 2px solid var(--gold); width: 85%; max-width: 320px; border-radius: 20px; text-align: center; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
+        .timer { color: #ff4d4d; margin-top: 10px; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
@@ -33,59 +27,50 @@
         </div>
 
         <div class="task-box">
-            🎁 <b>المهمة 1:</b> 50 إعلان = <span style="color:var(--primary)">0.0010$</span>
-            <br> الإنجاز: <span id="task1Progress" style="color:var(--gold)">0</span> / 50
+            🎁 <b>المهمة 1:</b> 50 إعلان = <span style="color:var(--primary)">0.0005$</span>
+            <br> الإنجاز اليومي: <span id="task1Progress">0</span> / 50 (المرات: <span id="m1_times">0</span>/2)
         </div>
 
         <div class="task-box">
-            🔥 <b>المهمة 2:</b> 100 إعلان = <span style="color:var(--primary)">0.0500$</span>
-            <br> الإنجاز: <span id="task2Progress" style="color:var(--gold)">0</span> / 100
+            🔥 <b>المهمة 2:</b> 100 إعلان = <span style="color:var(--primary)">0.0020$</span>
+            <br> الإنجاز اليومي: <span id="task2Progress">0</span> / 100 (المرات: <span id="m2_times">0</span>/2)
         </div>
 
-        <div class="ref-section">
-            <span style="font-size: 0.8rem; color: var(--primary);">👥 شارك الموقع:</span>
-            <p style="font-size: 0.75rem; margin: 5px 0;">أرسل الرابط لأصدقائك لدعم الموقع</p>
-            <div class="ref-input-group">
-                <input type="text" id="refLink" class="ref-input" value="" readonly>
-                <button class="copy-btn" onclick="copyRef()">نسخ</button>
-            </div>
-        </div>
-
-        <div id="timerDisplay" style="display:none; color:#ff4d4d; margin-top:10px; font-weight:bold;">انتظر <span id="seconds">3</span> ثوانٍ...</div>
+        <div id="timerDisplay" class="timer">انتظر <span id="seconds">5</span> ثوانٍ لضمان الربح...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
         
         <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
         <p style="color: #ff4d4d; font-size: 0.85rem; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
-    <div id="shamModal" class="modal">
-        <div class="modal-content">
-            <h3 style="color: var(--gold);">سحب الأرباح</h3>
-            <input type="number" id="accountNum" placeholder="رقم الموبايل">
-            <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال بصمة السحب</button>
-            <button onclick="document.getElementById('shamModal').style.display='none'" style="background:none; border:none; color:white; margin-top:10px; cursor:pointer;">إلغاء</button>
-        </div>
-    </div>
-
     <script>
         const S_KEY = "SECRET_PRO_SHAM_2026"; 
 
         window.onload = function() {
-            let myID = localStorage.getItem('myID') || "ID" + Math.floor(Math.random() * 90000);
-            localStorage.setItem('myID', myID);
-            document.getElementById('refLink').value = window.location.origin + window.location.pathname + "?ref=" + myID;
-
+            checkDailyReset();
             loadBalance();
             updateUI();
         };
+
+        function checkDailyReset() {
+            const lastDate = localStorage.getItem('lastAccessDate');
+            const today = new Date().toLocaleDateString();
+            if (lastDate !== today) {
+                localStorage.setItem('count1', 0);
+                localStorage.setItem('count2', 0);
+                localStorage.setItem('m1_done_times', 0);
+                localStorage.setItem('m2_done_times', 0);
+                localStorage.setItem('lastAccessDate', today);
+            }
+        }
 
         function startAdProcess() {
             const btn = document.getElementById('adBtn');
             btn.disabled = true;
             document.getElementById('timerDisplay').style.display = "block";
-            let timeLeft = 3;
+            let timeLeft = 5; // تم رفع الانتظار لـ 5 ثوانٍ لتحسين الجودة
             
-            window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
+            window.open('https://www.profitablecpmrate.com/tdy79h2p2?key=3887b4618e0018b14e51249b6b9074d4', '_blank');
 
             let countdown = setInterval(() => {
                 timeLeft--;
@@ -95,42 +80,43 @@
                     addBalance();
                     btn.disabled = false;
                     document.getElementById('timerDisplay').style.display = "none";
-                    document.getElementById('seconds').innerText = 3;
+                    document.getElementById('seconds').innerText = 5;
                 }
             }, 1000);
         }
 
         function addBalance() {
-            let current = parseFloat(document.getElementById('balance').innerText);
-            let reward = 0.000008; 
+            let current = parseFloat(localStorage.getItem('userBalance') || 0);
             
-            let c1 = (parseInt(localStorage.getItem('count1')) || 0) + 1;
-            let c2 = (parseInt(localStorage.getItem('count2')) || 0) + 1;
+            // الربح الأساسي (معدل أمان عالي جداً)
+            let reward = 0.000001; 
+            
+            let c1 = parseInt(localStorage.getItem('count1') || 0) + 1;
+            let c2 = parseInt(localStorage.getItem('count2') || 0) + 1;
+            let m1_times = parseInt(localStorage.getItem('m1_done_times') || 0);
+            let m2_times = parseInt(localStorage.getItem('m2_done_times') || 0);
 
-            if (c1 >= 50) { reward += 0.0010; c1 = 0; }
-            if (c2 >= 100) { reward += 0.0500; c2 = 0; }
+            if (c1 >= 50 && m1_times < 2) {
+                reward += 0.0005; // تم التعديل لتناسب CPM 0.478
+                c1 = 0;
+                m1_times++;
+                localStorage.setItem('m1_done_times', m1_times);
+            }
+
+            if (c2 >= 100 && m2_times < 2) {
+                reward += 0.0020; // تم التعديل لتناسب CPM 0.478
+                c2 = 0;
+                m2_times++;
+                localStorage.setItem('m2_done_times', m2_times);
+            }
 
             localStorage.setItem('count1', c1);
             localStorage.setItem('count2', c2);
 
             let newBalance = (current + reward).toFixed(7);
             localStorage.setItem('userBalance', newBalance);
-            localStorage.setItem('balanceHash', btoa(newBalance + S_KEY));
             document.getElementById('balance').innerText = newBalance + " $";
             updateUI();
-        }
-
-        function sendToWhatsApp() {
-            let num = document.getElementById('accountNum').value;
-            let bValue = document.getElementById('balance').innerText.replace(' $', '');
-            if(num.length < 8) { alert("رقم الحساب خطأ"); return; }
-            
-            let message = "طلب سحب جديد%0A";
-            message += "الحساب: " + num + "%0A";
-            message += "الرصيد: " + bValue + "$%0A";
-            message += "البصمة: [" + btoa(bValue + S_KEY) + "]";
-            
-            window.open("https://wa.me/963998897823?text=" + message, "_blank");
         }
 
         function loadBalance() {
@@ -141,13 +127,8 @@
         function updateUI() {
             document.getElementById('task1Progress').innerText = localStorage.getItem('count1') || 0;
             document.getElementById('task2Progress').innerText = localStorage.getItem('count2') || 0;
-        }
-
-        function copyRef() {
-            const copyText = document.getElementById("refLink");
-            copyText.select();
-            document.execCommand("copy");
-            alert("تم نسخ الرابط! شاركه لدعم الموقع.");
+            document.getElementById('m1_times').innerText = localStorage.getItem('m1_done_times') || 0;
+            document.getElementById('m2_times').innerText = localStorage.getItem('m2_done_times') || 0;
         }
     </script>
 </body>
