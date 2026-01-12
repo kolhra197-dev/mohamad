@@ -21,7 +21,7 @@
         .close-x { position: absolute; top: 5px; right: 15px; font-size: 30px; color: var(--gold); cursor: pointer; font-weight: bold; }
         .modal-content p { margin: 10px 0 5px; font-size: 0.9rem; color: #cbd5e1; }
         .modal-content input { width: 90%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--gold); background: #0f172a; color: white; text-align: center; }
-        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .confirm-btn { background: #25d366; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -32,20 +32,21 @@
             <span id="balance">0.0000000 $</span>
         </div>
         <div class="withdraw-methods">
-            <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة:</div>
+            <div style="color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold;">وسائل السحب المدعومة (سوريا):</div>
             <button class="sham-btn" onclick="openShamModal()">اسحب عبر شام كاش (Sham Cash)</button>
+            <div style="font-size: 0.9rem; padding: 10px 0; opacity: 0.6;">⭐ سيريتل كاش (قريباً)</div>
         </div>
         <button id="updateBtn" class="btn" onclick="openAd()">مشاهدة الاعلان 💚</button>
-        <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 15px; opacity: 0.8;">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
+        <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 15px; opacity: 0.8; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</div>
     </div>
 
     <div id="shamModal" class="modal">
         <div class="modal-content">
             <span class="close-x" onclick="closeShamModal()">&times;</span>
             <h3 style="color: var(--gold);">تأكيد سحب شام كاش</h3>
-            <p>اكتب رقم حسابك:</p>
+            <p>1. اكتب رقم حسابك:</p>
             <input type="number" id="accountNum" placeholder="09xxxxxxxx">
-            <p>أرفق صورة إثبات الحساب:</p>
+            <p>2. اختر صورة إثبات الحساب:</p>
             <input type="file" id="userImage" accept="image/*">
             <button class="confirm-btn" onclick="sendToWhatsApp()">إرسال وتأكيد عبر واتساب</button>
         </div>
@@ -63,19 +64,4 @@
 
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
-            if(num.length < 10) {
-                alert("يرجى إدخال رقم حساب شام كاش صحيح مكون من 10 أرقام.");
-                return;
-            }
-
-            // تم إضافة رقمك هنا 0998897823 بصيغة دولية
-            let myWhatsApp = "963998897823"; 
-            let message = "مرحباً محمد، أريد ربط حسابي في شام كاش لإستلام الأرباح.%0Aرقم الحساب الخاص بي: " + num;
-            
-            window.open("https://wa.me/" + myWhatsApp + "?text=" + message, "_blank");
-            alert("تم تجهيز بياناتك. سيفتح الواتساب الآن، يرجى إرسال الرسالة وإرفاق الصورة لمحمد ليتم تفعيل السحب.");
-            closeShamModal();
-        }
-    </script>
-</body>
-</html>
+            if
