@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شام كاش - الربح من الإعلانات</title>
+    <title>شاهد واربح بكل سهولة</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        .container { background: var(--card); padding: 2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
+        /* الحاوية الرئيسية */
+        .container { background: var(--card); padding: 2.2rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         
-        .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 2px dashed var(--primary); position: relative; }
+        /* بطاقة الرصيد */
+        .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
         
+        /* عداد المهمة اليومية */
         .daily-task { background: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 12px; margin-bottom: 1rem; font-size: 0.85rem; border: 1px solid var(--gold); }
         #taskProgress { color: var(--gold); font-weight: bold; }
 
-        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.2rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; position: relative; overflow: hidden; transition: 0.3s; }
+        /* الأزرار */
+        .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.2rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; }
         .btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.7; }
         
         #timerDisplay { font-size: 1.1rem; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; display: none; }
 
-        .withdraw-section { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; margin-top: 20px; }
-        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; }
+        .sham-btn { background: var(--gold); color: #000; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 15px; }
 
-        /* شريط السحوبات الأخيرة */
+        /* شريط السحوبات */
         .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); padding: 10px 0; overflow: hidden; white-space: nowrap; }
         .ticker { display: inline-block; animation: ticker 30s linear infinite; color: var(--primary); font-size: 0.9rem; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -39,8 +42,8 @@
 <body>
 
     <div class="container">
-        <h2 style="margin:0; color: var(--primary);">شام كاش 🇸🇾</h2>
-        <p style="font-size: 0.8rem; opacity: 0.7;">شاهد واربح بكل سهولة</p>
+        <h2 style="margin:0; color: var(--primary); font-size: 1.5rem;">شاهد واربح بكل سهولة</h2>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">اربح من خلال مشاهدة الإعلانات البسيطة</p>
 
         <div class="balance-card">
             <span style="font-size: 0.9rem; color: #94a3b8;">رصيدك الحالي</span>
@@ -55,40 +58,44 @@
         <div id="timerDisplay">انتظر <span id="seconds">10</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
 
-        <div class="withdraw-section">
-            <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
-            <p style="font-size: 0.7rem; color: #ff4d4d; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
-        </div>
+        <button class="sham-btn" onclick="document.getElementById('shamModal').style.display='block'">سحب عبر شام كاش (Sham Cash)</button>
+        <p style="font-size: 0.7rem; color: #ff4d4d; margin-top: 10px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div class="ticker-wrap">
         <div class="ticker">
-            ✅ مستخدم من دمشق سحب 15.20$ عبر شام كاش منذ 5 دقائق ... 
-            ✅ تم معالجة طلب سحب بقيمة 20.00$ لمستخدم من حلب ... 
-            ✅ مبروك! أحد المستخدمين أكمل المهمة اليومية وحصل على المكافأة ...
-            ✅ سيريتل كاش ستتوفر قريباً كخيار سحب إضافي ...
+            ✅ مستخدم من دمشق سحب 15.20$ عبر شام كاش منذ قليل ... ✅ تم معالجة طلب سحب بقيمة 20.00$ لمستخدم آخر ... ✅ شاهد 50 إعلان لتحصل على المكافأة اليومية ...
         </div>
     </div>
 
     <div id="shamModal" class="modal">
         <div class="modal-content">
-            <h3 style="color: var(--gold); margin-top:0;">شام كاش</h3>
-            <p style="font-size: 0.85rem;">أدخل رقم حسابك لإرسال الأرباح:</p>
+            <h3 style="color: var(--gold); margin-top:0;">سحب الأرباح</h3>
+            <p style="font-size: 0.85rem;">أدخل رقم حساب شام كاش الخاص بك:</p>
             <input type="number" id="accountNum" placeholder="09xxxxxxxx">
-            <button class="confirm-btn" onclick="sendToWhatsApp()">تأكيد وفتح واتساب</button>
+            <button class="confirm-btn" onclick="sendToWhatsApp()">تأكيد وإرسال للواتساب</button>
             <button style="background:none; border:none; color:white; margin-top:10px; cursor:pointer;" onclick="document.getElementById('shamModal').style.display='none'">إلغاء</button>
         </div>
     </div>
 
     <script>
-        let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
-        document.getElementById('taskProgress').innerText = adsCount;
+        const S_KEY = "SECURE_VERIFY_2026";
+        function getHash(val) { return btoa(val + S_KEY); }
 
         window.onload = function() {
-            let savedBalance = localStorage.getItem('userBalance');
-            if (savedBalance) {
+            let savedBalance = localStorage.getItem('userBalance') || "0.0000000";
+            let savedHash = localStorage.getItem('balanceHash');
+
+            // حماية الرصيد من التلاعب
+            if (savedHash && savedHash !== getHash(savedBalance)) {
+                alert("تنبيه أمان: تم اكتشاف تلاعب، سيتم تصفير الرصيد.");
+                localStorage.clear();
+                location.reload();
+            } else {
                 document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
             }
+            
+            document.getElementById('taskProgress').innerText = parseInt(localStorage.getItem('adsCount')) || 0;
         };
 
         function startAdProcess() {
@@ -100,7 +107,6 @@
             timerDiv.style.display = "block";
             let timeLeft = 10;
 
-            // فتح الإعلان في نافذة جديدة
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
 
             let countdown = setInterval(() => {
@@ -117,36 +123,35 @@
         }
 
         function addBalance() {
-            let b = document.getElementById('balance');
-            let current = parseFloat(b.innerText);
-            let newBalance = current + 0.0000001;
+            let bElem = document.getElementById('balance');
+            let current = parseFloat(bElem.innerText);
+            let newBalance = (current + 0.0000001).toFixed(7);
             
-            // تحديث مهمة الـ 50 إعلان
+            let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
             adsCount++;
-            if (adsCount === 50) {
-                newBalance += 0.0005; // إضافة المكافأة
-                alert("تهانينا! لقد أكملت 50 إعلاناً اليوم وحصلت على مكافأة 0.0005$ إضافية 🥳");
-                adsCount = 0; // إعادة العداد للغد
+            
+            if (adsCount >= 50) {
+                newBalance = (parseFloat(newBalance) + 0.0005).toFixed(7);
+                alert("مبروك! أكملت 50 إعلاناً وحصلت على مكافأة.");
+                adsCount = 0;
             }
             
             document.getElementById('taskProgress').innerText = adsCount;
             localStorage.setItem('adsCount', adsCount);
-            
-            b.innerText = newBalance.toFixed(7) + " $";
             localStorage.setItem('userBalance', newBalance);
+            localStorage.setItem('balanceHash', getHash(newBalance));
+            
+            bElem.innerText = newBalance + " $";
         }
 
         function sendToWhatsApp() {
             let num = document.getElementById('accountNum').value;
-            let b = parseFloat(document.getElementById('balance').innerText);
-            if(num.length < 10) { alert("رقم الحساب غير صحيح"); return; }
+            let bStr = document.getElementById('balance').innerText.replace(' $', '');
+            if(num.length < 8) { alert("رقم الحساب غير صحيح"); return; }
 
-            // نظام التشفير (الرصيد * 100)
-            let verifyCode = (b * 100).toFixed(2);
-            let myWhatsApp = "963998897823"; 
-            let message = "طلب سحب أرباح جديد%0Aالحساب: " + num + "%0Aرمز الأمان المشفر: " + verifyCode;
-            
-            window.open("https://wa.me/" + myWhatsApp + "?text=" + message, "_blank");
+            let verifyCode = getHash(bStr).substring(0, 10);
+            let message = "طلب سحب جديد%0Aالحساب: " + num + "%0Aالرصيد: " + bStr + "$%0Aرمز الأمان: " + verifyCode;
+            window.open("https://wa.me/963998897823?text=" + message, "_blank");
         }
     </script>
 </body>
