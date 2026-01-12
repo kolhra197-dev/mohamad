@@ -3,48 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شام كاش - النسخة الاحترافية</title>
+    <title>شام كاش - الانطلاقة الكبرى</title>
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* تحسين العلم السوري الأخضر بألوان قوية */
-        .flag-box { 
-            width: 100px; height: 60px; 
-            background: linear-gradient(to bottom, #00ad00 33.3%, #ffffff 33.3%, #ffffff 66.6%, #000000 66.6%); 
-            border-radius: 8px; border: 2px solid #ffffff; 
-            position: relative; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 173, 0, 0.4);
-            display: flex; justify-content: center; align-items: center;
-        }
-        .stars-row { color: #ff0000; font-size: 22px; font-weight: bold; position: absolute; top: 12px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        /* تنسيق العلم الحقيقي */
+        .flag-img { width: 120px; height: auto; border-radius: 8px; border: 2px solid #fff; box-shadow: 0 0 20px rgba(0,255,136,0.3); margin-bottom: 15px; }
 
-        .container { background: var(--card); padding: 2.2rem; border-radius: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin-top: 10px; }
+        .container { background: var(--card); padding: 2.2rem; border-radius: 30px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); }
         .balance-card { background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05)); padding: 1.5rem; border-radius: 20px; margin: 1.2rem 0; border: 2px solid var(--primary); }
-        #balance { font-size: 2.4rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 15px rgba(0,255,136,0.4); }
+        #balance { font-size: 2.5rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 15px rgba(0,255,136,0.5); }
         
-        .daily-task { background: rgba(243, 186, 47, 0.1); padding: 12px; border-radius: 15px; margin-bottom: 1.2rem; font-size: 0.9rem; border: 1px solid var(--gold); color: #fff; }
+        .daily-task { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 15px; margin-bottom: 1.2rem; font-size: 0.9rem; border: 1px solid var(--gold); }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1.2rem; font-size: 1.3rem; font-weight: bold; border-radius: 18px; cursor: pointer; width: 100%; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,255,136,0.3); }
-        .btn:active { transform: translateY(3px); box-shadow: none; }
-        .btn:disabled { background: #475569; opacity: 0.7; box-shadow: none; }
+        .btn:disabled { background: #475569; opacity: 0.7; }
         
         #timerDisplay { font-size: 1.2rem; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; display: none; }
-        .sham-btn { background: var(--gold); color: #000; padding: 14px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 18px; font-size: 1rem; }
+        .sham-btn { background: var(--gold); color: #000; padding: 14px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 18px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <center>
-            <div class="flag-box">
-                <span class="stars-row">★ ★ ★</span>
-            </div>
-        </center>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg/1200px-Flag_of_Syria_%281932-1958%3B_1961-1963%29.svg.png" class="flag-img" alt="علم سوريا الأخضر">
         
-        <h2 style="margin:0; color: var(--primary); font-size: 1.8rem;">شام كاش 🇸🇾</h2>
-        <p style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px;">النسخة الجديدة المحدثة</p>
+        <h2 style="margin:0; color: var(--primary);">شام كاش</h2>
+        <p style="font-size: 0.8rem; opacity: 0.7;">تصفير شامل - ابدأ من جديد بنجاح</p>
 
         <div class="balance-card">
-            <span style="font-size: 1rem; color: #94a3b8; font-weight: 500;">رصيدك المتراكم</span>
+            <span style="font-size: 1rem; color: #94a3b8;">رصيدك المتراكم</span>
             <span id="balance">0.0000000 $</span>
         </div>
 
@@ -53,20 +41,20 @@
             <br> الإنجاز: <span id="taskProgress" style="color:var(--gold); font-weight:bold;">0 / 50</span>
         </div>
 
-        <div id="timerDisplay">يرجى الانتظار... <span id="seconds">10</span> ث</div>
+        <div id="timerDisplay">انتظر <span id="seconds">10</span> ثوانٍ...</div>
         <button id="adBtn" class="btn" onclick="startAdProcess()">مشاهدة الإعلان وحصد الربح 💰</button>
 
         <button class="sham-btn" onclick="alert('الحد الأدنى للسحب هو 15$')">سحب عبر شام كاش (Sham Cash)</button>
     </div>
 
     <script>
-        // التصفير الإجباري عند تحديث النسخة
-        const APP_VERSION = "3.0"; 
-        
+        // تغيير الـ VERSION يضمن تصفير كل حسابات الناس تلقائياً
+        const VERSION = "FINAL_RESET_01"; 
+
         window.onload = function() {
-            if (localStorage.getItem('sys_ver') !== APP_VERSION) {
+            if (localStorage.getItem('user_version') !== VERSION) {
                 localStorage.clear();
-                localStorage.setItem('sys_ver', APP_VERSION);
+                localStorage.setItem('user_version', VERSION);
                 location.reload(); 
             }
 
@@ -74,11 +62,10 @@
             if (savedBalance) {
                 document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(7) + " $";
             }
-            
-            updateTaskUI();
+            updateUI();
         };
 
-        function updateTaskUI() {
+        function updateUI() {
             let adsCount = parseInt(localStorage.getItem('adsCount')) || 0;
             document.getElementById('taskProgress').innerText = adsCount + " / 50";
         }
@@ -115,12 +102,12 @@
             
             if (adsCount >= 50) {
                 newBalance += 0.0005;
-                alert("تهانينا! حصلت على مكافأة الـ 50 إعلاناً");
+                alert("مبروك! حصلت على مكافأة الـ 50 إعلاناً");
                 adsCount = 0;
             }
             
             localStorage.setItem('adsCount', adsCount);
-            updateTaskUI();
+            updateUI();
             b.innerText = newBalance.toFixed(7) + " $";
             localStorage.setItem('userBalance', newBalance);
         }
