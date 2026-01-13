@@ -9,6 +9,12 @@
     <style>
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; --share: #38bdf8; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        /* تنسيق مربع الاسم الجديد */
+        .top-bar { width: 100%; max-width: 400px; display: flex; justify-content: flex-start; margin-bottom: 10px; }
+        #userName { background: var(--card); border: 1px solid var(--primary); color: white; padding: 8px 12px; border-radius: 12px; width: 150px; font-size: 0.85rem; outline: none; }
+        #userName::placeholder { color: #64748b; }
+
         .container { background: var(--card); padding: 1.5rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin: 10px 0; position: relative; z-index: 1; }
         .balance-card { background: transparent; padding: 1rem; border-radius: 20px; margin: 0.5rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
@@ -35,6 +41,10 @@
         <script type="text/javascript" src="//www.highperformanceformat.com/9c9c8bb634e33dcb4828cd55b8401bb6/invoke.js"></script>
     </div>
 
+    <div class="top-bar">
+        <input type="text" id="userName" placeholder="👤 اكتب اسمك هنا..." oninput="saveName()">
+    </div>
+
     <div class="container">
         <h2 style="margin:0; color: var(--primary); font-size: 1.4rem;">شاهد واربح بكل سهولة</h2>
         <div class="balance-card">
@@ -46,7 +56,6 @@
             🎁 المهمة 1: <span id="task1Progress">0</span> / 50 
             <b style="color:var(--gold); float:left;">+0.005$</b>
         </div>
-
         <div id="box2" class="task-box">
             🔥 المهمة 2: <span id="task2Progress">0</span> / 100 
             <b style="color:var(--gold); float:left;">+0.01$</b>
@@ -65,7 +74,6 @@
                 <a id="shareTG" href="#" target="_blank" style="color:#0088cc;"><i class="fab fa-telegram"></i></a>
             </div>
         </div>
-        
         <p style="font-size: 0.7rem; color: #f87171; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
@@ -80,26 +88,21 @@
         window.onload = function() { 
             loadData(); 
             updateShareLinks();
+            // استرجاع الاسم المحفوظ
+            document.getElementById('userName').value = localStorage.getItem('savedName') || "";
         };
+
+        function saveName() {
+            localStorage.setItem('savedName', document.getElementById('userName').value);
+        }
 
         function startAdProcess() {
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
-            
             let currentBal = parseFloat(localStorage.getItem('userBalance') || 0);
             let progress = parseInt(localStorage.getItem('adProgress') || 0) + 1;
-            
-            // ربح الضغطة المتوازن
             currentBal += 0.0000005;
-
-            // مكافآت المهام
-            if (progress === 50) {
-                currentBal += 0.005; 
-                alert("مبروك! حصلت على مكافأة المهمة الأولى 🎁");
-            } else if (progress === 100) {
-                currentBal += 0.01; 
-                alert("رائع! حصلت على مكافأة المهمة الكبرى 🔥");
-            }
-
+            if (progress === 50) { currentBal += 0.005; alert("مبروك! مكافأة المهمة 1 🎁"); }
+            else if (progress === 100) { currentBal += 0.01; alert("رائع! مكافأة المهمة 2 🔥"); }
             localStorage.setItem('userBalance', currentBal.toFixed(7));
             localStorage.setItem('adProgress', progress);
             loadData();
@@ -110,7 +113,6 @@
             document.getElementById('balance').innerText = (parseFloat(localStorage.getItem('userBalance') || 0)).toFixed(7) + " $";
             document.getElementById('task1Progress').innerText = p;
             document.getElementById('task2Progress').innerText = p;
-
             if (p >= 50) document.getElementById('box1').classList.add('task-completed');
             if (p >= 100) document.getElementById('box2').classList.add('task-completed');
         }
@@ -121,11 +123,10 @@
 
         function updateShareLinks() {
             let url = encodeURIComponent(window.location.href);
-            let text = encodeURIComponent("اربح المال بسهولة! شاهد الإعلانات واجمع الدولارات: ");
             document.getElementById('siteUrl').innerText = window.location.href;
-            document.getElementById('shareWA').href = `https://wa.me/?text=${text}${url}`;
+            document.getElementById('shareWA').href = `https://wa.me/?text=اربح المال! ${url}`;
             document.getElementById('shareFB').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}&text=${text}`;
+            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}`;
         }
 
         function openWithdrawModal() {
@@ -140,14 +141,17 @@
 
         function sendToWhatsApp() {
             let num = document.getElementById('shamNumber').value;
+            let name = document.getElementById('userName').value || "غير معروف";
             if(!num) return alert("أدخل رقم الحساب أولاً!");
-            let code = btoa("NAME:MOHAMAD|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
-            let message = "السلام عليكم ورحمة الله وبركاته\n\nسحب المال عن طريق حسابي شام كاش ذو الرقم : " + num + "\nالشيفرة: (" + code + ")";
+            
+            // إضافة الاسم للشيفرة والرسالة
+            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
+            let message = "طلب سحب جديد من: " + name + "\n\n" +
+                          "رقم حساب شام كاش: " + num + "\n" +
+                          "الشيفرة: (" + code + ")";
             window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
         }
     </script>
-
     <script src="https://pl28466484.effectivegatecpm.com/ae/c5/4c/aec54ce7eabd9f70d01ce00ff6766cbb.js"></script>
-
 </body>
 </html>
