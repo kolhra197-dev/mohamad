@@ -22,12 +22,20 @@
         .copy-btn { background: var(--share); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; }
         .social-share-btns { display: flex; justify-content: space-around; margin-top: 10px; }
         .social-share-btns a { font-size: 1.5rem; transition: 0.3s; }
+        .ad-slot { width: 320px; height: 50px; margin: 5px 0; display: flex; align-items: center; justify-content: center; }
         #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 2000; width: 90%; max-width: 350px; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
         .modal-input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; background: #0f172a; color: white; border: 1px solid #444; box-sizing: border-box; text-align: center; }
     </style>
 </head>
 <body>
+
+    <div class="ad-slot">
+        <script type="text/javascript">
+            atOptions = { 'key' : '9c9c8bb634e33dcb4828cd55b8401bb6', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/9c9c8bb634e33dcb4828cd55b8401bb6/invoke.js"></script>
+    </div>
 
     <div class="container">
         <h2 style="margin:0; color: var(--primary); font-size: 1.4rem;">شاهد واربح بكل سهولة</h2>
@@ -74,32 +82,22 @@
     </div>
 
     <script>
-        window.onload = function() { 
-            checkDailyReset();
-            loadData(); 
-            updateShareLinks();
-        };
+        window.onload = function() { checkDailyReset(); loadData(); updateShareLinks(); };
 
         function checkDailyReset() {
             const lastDate = localStorage.getItem('lastResetDate');
             const today = new Date().toDateString();
-            if (lastDate !== today) {
-                localStorage.setItem('adProgress', 0);
-                localStorage.setItem('lastResetDate', today);
-            }
+            if (lastDate !== today) { localStorage.setItem('adProgress', 0); localStorage.setItem('lastResetDate', today); }
         }
 
         function startAdProcess() {
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
             let currentBal = parseFloat(localStorage.getItem('userBalance') || 0);
             let progress = parseInt(localStorage.getItem('adProgress') || 0) + 1;
-            
             if (progress > 200) { alert("لقد أكملت جميع المهام لهذا اليوم! عد غداً 🌟"); return; }
             currentBal += 0.0000005;
-
             if (progress === 50 || progress === 150) { currentBal += 0.005; alert("مبروك! استلمت مكافأة المهمة الأولى 🎁"); }
             else if (progress === 100 || progress === 200) { currentBal += 0.01; alert("رائع! استلمت مكافأة المهمة الكبرى 🔥"); }
-
             localStorage.setItem('userBalance', currentBal.toFixed(7));
             localStorage.setItem('adProgress', progress);
             loadData();
@@ -120,21 +118,17 @@
             document.getElementById('box2').classList.toggle('task-completed', pr2 >= 100);
         }
 
-        // إرسال الشيفرة بين قوسين ليتعرف عليها موقع الإدارة
         function sendToWhatsApp() {
             let name = document.getElementById('userNameInput').value;
             let num = document.getElementById('shamNumber').value;
             let bal = localStorage.getItem('userBalance') || "0";
             if(!name || !num) return alert("يرجى ملء جميع البيانات!");
-            
             let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + bal);
             let message = "طلب سحب جديد\nالاسم: " + name + "\nالرقم: " + num + "\nالشيفرة: (" + code + ")";
             window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
         }
 
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => { alert("تم نسخ الرابط! 🚀"); });
-        }
+        function copyLink() { navigator.clipboard.writeText(window.location.href).then(() => { alert("تم نسخ الرابط! 🚀"); }); }
 
         function updateShareLinks() {
             let url = encodeURIComponent(window.location.href);
@@ -144,15 +138,11 @@
             document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}`;
         }
 
-        function openWithdrawModal() {
-            document.getElementById('modalOverlay').style.display = 'block';
-            document.getElementById('withdrawModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.getElementById('withdrawModal').style.display = 'none';
-        }
+        function openWithdrawModal() { document.getElementById('modalOverlay').style.display = 'block'; document.getElementById('withdrawModal').style.display = 'block'; }
+        function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; document.getElementById('withdrawModal').style.display = 'none'; }
     </script>
+
+    <script src="https://pl28466484.effectivegatecpm.com/ae/c5/4c/aec54ce7eabd9f70d01ce00ff6766cbb.js"></script>
+
 </body>
 </html>
