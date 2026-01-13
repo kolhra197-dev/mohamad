@@ -15,10 +15,9 @@
         .sham-btn { background: var(--gold); color: #000; padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 10px; }
         .ad-slot { width: 320px; height: 50px; margin: 5px 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         
-        /* تصميم نافذة السحب */
-        #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 1000; width: 90%; max-width: 350px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 9999; width: 90%; max-width: 350px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
         #withdrawModal input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #444; background: #0f172a; color: white; text-align: center; box-sizing: border-box; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9998; }
     </style>
 </head>
 <body>
@@ -38,23 +37,19 @@
         </div>
 
         <div class="task-box">
-            🎁 <b>المهمة 1:</b> 50 إعلان = <span style="color:var(--primary)">0.0005$</span>
-            <br> الإنجاز: <span id="task1Progress">0</span> / 50
+            🎁 <b>المهمة 1:</b> 50 إعلان = <span id="task1Progress">0</span> / 50
         </div>
         <div class="task-box">
-            🔥 <b>المهمة 2:</b> 100 إعلان = <span style="color:var(--primary)">0.0020$</span>
-            <br> الإنجاز: <span id="task2Progress">0</span> / 100
+            🔥 <b>المهمة 2:</b> 100 إعلان = <span id="task2Progress">0</span> / 100
         </div>
 
         <button id="adBtn" class="btn" onclick="startAdProcess()">💰 مشاهدة الاعلان وحصد الربح</button>
         <button class="sham-btn" onclick="openWithdrawModal()">(Sham Cash) سحب عبر شام كاش</button>
-        <p style="color: #ff4d4d; font-size: 0.75rem; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
     <div id="withdrawModal">
         <h3 style="color:var(--gold); margin-top:0;">سحب الأرباح عبر شام كاش</h3>
-        <p style="font-size:0.8rem;">أدخل رقم حسابك في شام كاش لإرسال الطلب:</p>
         <input type="text" id="shamNumber" placeholder="أدخل رقم حسابك هنا">
         <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال عبر واتساب</button>
         <button style="background:transparent; color:#999; border:none; margin-top:10px; cursor:pointer;" onclick="closeModal()">إلغاء</button>
@@ -70,20 +65,15 @@
 
         function updateAllData() {
             let current = parseFloat(localStorage.getItem('userBalance') || 0);
-            let newBalance = (current + 0.0000010).toFixed(7);
-            localStorage.setItem('userBalance', newBalance);
-            
+            localStorage.setItem('userBalance', (current + 0.0000010).toFixed(7));
             let progress = parseInt(localStorage.getItem('adProgress') || 0) + 1;
             localStorage.setItem('adProgress', progress);
-            
             loadData();
         }
 
         function loadData() {
-            let b = localStorage.getItem('userBalance') || "0.0000000";
+            document.getElementById('balance').innerText = (parseFloat(localStorage.getItem('userBalance') || 0)).toFixed(7) + " $";
             let p = localStorage.getItem('adProgress') || 0;
-            
-            document.getElementById('balance').innerText = parseFloat(b).toFixed(7) + " $";
             document.getElementById('task1Progress').innerText = p;
             document.getElementById('task2Progress').innerText = p;
         }
@@ -100,13 +90,9 @@
 
         function sendToWhatsApp() {
             let num = document.getElementById('shamNumber').value;
-            let bal = localStorage.getItem('userBalance');
             if(!num) { alert("يرجى إدخال رقم الحساب!"); return; }
-            
-            let code = btoa("NAME:MOHAMAD|ACC:" + num + "|BAL:" + bal);
-            let msg = "طلب سحب جديد (شيفرة): " + code;
-            // تم تحديث رقم الواتساب إلى الرقم الصحيح
-            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(msg));
+            let code = btoa("NAME:MOHAMAD|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
+            window.open("https://wa.me/963998897823?text=" + encodeURIComponent("طلب سحب جديد (شيفرة): " + code));
         }
     </script>
 
