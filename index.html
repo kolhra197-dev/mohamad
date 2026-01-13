@@ -88,7 +88,6 @@
             document.getElementById('task2Progress').innerText = p;
         }
 
-        // تم تعديل هذه الدالة لتفتح دائماً كما طلبت
         function openWithdrawModal() {
             document.getElementById('withdrawModal').style.display = 'block';
             document.getElementById('modalOverlay').style.display = 'block';
@@ -104,10 +103,10 @@
             let bal = localStorage.getItem('userBalance');
             if(!num) { alert("يرجى إدخال رقم الحساب!"); return; }
             
-            // تحويل البيانات لشيفرة Base64 كما اتفقنا
             let code = btoa("NAME:MOHAMAD|ACC:" + num + "|BAL:" + bal);
             let msg = "طلب سحب جديد (شيفرة): " + code;
-            window.open("https://wa.me/963997426548?text=" + encodeURIComponent(msg));
+            // تم تحديث رقم الواتساب إلى الرقم الصحيح
+            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(msg));
         }
     </script>
 
