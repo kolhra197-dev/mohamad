@@ -55,7 +55,7 @@
         <button class="sham-btn" onclick="openWithdrawModal()">(Sham Cash) سحب عبر شام كاش</button>
 
         <div class="share-section">
-            <div class="share-url" id="siteUrl">/https://mohamad-one.vercel.app</div>
+            <div class="share-url" id="siteUrl">https://mohamad-one.vercel.app</div>
             <button class="btn" style="background:var(--share); font-size:0.9rem; padding:10px;" onclick="copyLink()">نسخ الرابط</button>
         </div>
         <p style="font-size: 0.7rem; color: #f87171; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
@@ -65,13 +65,15 @@
     <div id="withdrawModal">
         <h3 style="color:var(--gold); margin-top:0;">سحب الأرباح</h3>
         <input type="text" id="shamNumber" placeholder="أدخل رقم حسابك هنا" style="width:100%; padding:15px; margin:15px 0; border-radius:12px; background:#0f172a; color:white; border:1px solid #444; box-sizing:border-box; text-align:center; font-size: 1.1rem;">
-        <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال الطلب</button>
+        <button id="finalSubmit" class="btn" style="background: #00ff88; color: #000;">تأكيد وإرسال الطلب</button>
     </div>
 
     <script>
         window.onload = function() { 
             loadData(); 
             document.getElementById('userName').value = localStorage.getItem('savedName') || "";
+            // ربط الزر برمجياً للتأكد من عمله 100%
+            document.getElementById('finalSubmit').onclick = sendToWhatsApp;
         };
 
         function saveName() { localStorage.setItem('savedName', document.getElementById('userName').value); }
@@ -114,14 +116,14 @@
             
             if(!num) { alert("أدخل رقم الحساب أولاً!"); return; }
 
-            // إنشاء الشيفرة والرسالة
+            // إنشاء الشيفرة التي تحتوي على كل شيء (الاسم والرقم والرصيد)
             let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + bal);
-            let message = "طلب سحب جديد من: " + name + "\n\n" +
-                          "رقم حساب شام كاش: " + num + "\n" +
-                          "الرصيد: " + bal + " $\n" +
-                          "الشيفرة: (" + code + ")";
             
-            // فتح واتساب
+            // الرسالة النصية لا تظهر الرصيد (للحماية)
+            let message = "طلب سحب جديد من: " + name + "\n" +
+                          "رقم حساب شام كاش: " + num + "\n\n" +
+                          "الشيفرة المطلوبة:\n" + code;
+            
             window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
         }
 
