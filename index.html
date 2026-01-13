@@ -12,7 +12,7 @@
         .container { background: var(--card); padding: 1.5rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin: 10px 0; position: relative; z-index: 1; }
         .balance-card { background: transparent; padding: 1rem; border-radius: 20px; margin: 0.5rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
-        .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid rgba(0, 255, 136, 0.3); text-align: right; transition: 0.3s; }
+        .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid rgba(0, 255, 136, 0.3); text-align: right; overflow: hidden; }
         .task-completed { border-color: var(--gold) !important; background: rgba(243, 186, 47, 0.1) !important; color: var(--gold); }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .sham-btn { background: var(--gold); color: #000; padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 10px; }
@@ -42,8 +42,15 @@
             <span id="balance">0.0000000 $</span>
         </div>
 
-        <div id="box1" class="task-box">🎁 المهمة 1: <span id="task1Progress">0</span> / 50</div>
-        <div id="box2" class="task-box">🔥 المهمة 2: <span id="task2Progress">0</span> / 100</div>
+        <div id="box1" class="task-box">
+            🎁 المهمة 1: <span id="task1Progress">0</span> / 50 
+            <b style="color:var(--gold); float:left;">+0.005$</b>
+        </div>
+
+        <div id="box2" class="task-box">
+            🔥 المهمة 2: <span id="task2Progress">0</span> / 100 
+            <b style="color:var(--gold); float:left;">+0.01$</b>
+        </div>
 
         <button class="btn" onclick="startAdProcess()">💰 مشاهدة الاعلان وحصد الربح</button>
         <button class="sham-btn" onclick="openWithdrawModal()">(Sham Cash) سحب عبر شام كاش</button>
@@ -84,7 +91,7 @@
             // ربح الضغطة المتوازن
             currentBal += 0.0000005;
 
-            // مكافآت المهام المدروسة (لا تسبب خسارة)
+            // مكافآت المهام
             if (progress === 50) {
                 currentBal += 0.005; 
                 alert("مبروك! حصلت على مكافأة المهمة الأولى 🎁");
