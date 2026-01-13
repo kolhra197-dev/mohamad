@@ -17,6 +17,11 @@
         .times-badge { background: var(--gold); color: black; padding: 2px 8px; border-radius: 10px; font-weight: bold; font-size: 0.75rem; margin-right: 5px; }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .sham-btn { background: var(--gold); color: #000; padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 10px; }
+        .share-section { margin-top: 20px; padding: 15px; background: rgba(56, 189, 248, 0.1); border-radius: 15px; border: 1px solid var(--share); }
+        .share-url { background: #000; padding: 8px; border-radius: 8px; font-size: 0.75rem; color: var(--share); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 10px; border: 1px solid #333; }
+        .copy-btn { background: var(--share); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; }
+        .social-share-btns { display: flex; justify-content: space-around; margin-top: 10px; }
+        .social-share-btns a { font-size: 1.5rem; transition: 0.3s; }
         #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 2000; width: 90%; max-width: 350px; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
         .modal-input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; background: #0f172a; color: white; border: 1px solid #444; box-sizing: border-box; text-align: center; }
@@ -45,6 +50,19 @@
 
         <button class="btn" onclick="startAdProcess()">💰 مشاهدة الاعلان وحصد الربح</button>
         <button class="sham-btn" onclick="openWithdrawModal()">(Sham Cash) سحب عبر شام كاش</button>
+
+        <div class="share-section">
+            <p style="margin:0 0 10px 0; font-size: 0.85rem; color: var(--share);">🚀 انشر الموقع لزيادة أرباحك:</p>
+            <div class="share-url" id="siteUrl">جارِ التحميل...</div>
+            <button class="copy-btn" onclick="copyLink()"><i class="fas fa-copy"></i> نسخ الرابط</button>
+            <div class="social-share-btns">
+                <a id="shareWA" href="#" target="_blank" style="color:#25D366;"><i class="fab fa-whatsapp"></i></a>
+                <a id="shareFB" href="#" target="_blank" style="color:#1877F2;"><i class="fab fa-facebook"></i></a>
+                <a id="shareTG" href="#" target="_blank" style="color:#0088cc;"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+        
+        <p style="font-size: 0.75rem; color: #f87171; margin-top: 15px; font-weight: bold;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
@@ -59,6 +77,7 @@
         window.onload = function() { 
             checkDailyReset();
             loadData(); 
+            updateShareLinks();
         };
 
         function checkDailyReset() {
@@ -75,22 +94,11 @@
             let currentBal = parseFloat(localStorage.getItem('userBalance') || 0);
             let progress = parseInt(localStorage.getItem('adProgress') || 0) + 1;
             
-            // إجمالي 200 ضغطة لإنهاء الدورتين
-            if (progress > 200) {
-                alert("لقد أكملت جميع المهام لهذا اليوم (2/2)! عد غداً 🌟");
-                return;
-            }
-
+            if (progress > 200) { alert("لقد أكملت جميع المهام لهذا اليوم! عد غداً 🌟"); return; }
             currentBal += 0.0000005;
 
-            // المكافآت مرتين يومياً
-            if (progress === 50 || progress === 150) {
-                currentBal += 0.005; 
-                alert("مبروك! استلمت مكافأة المهمة الأولى 🎁");
-            } else if (progress === 100 || progress === 200) {
-                currentBal += 0.01; 
-                alert("رائع! استلمت مكافأة المهمة الكبرى 🔥");
-            }
+            if (progress === 50 || progress === 150) { currentBal += 0.005; alert("مبروك! استلمت مكافأة المهمة الأولى 🎁"); }
+            else if (progress === 100 || progress === 200) { currentBal += 0.01; alert("رائع! استلمت مكافأة المهمة الكبرى 🔥"); }
 
             localStorage.setItem('userBalance', currentBal.toFixed(7));
             localStorage.setItem('adProgress', progress);
@@ -100,31 +108,40 @@
         function loadData() {
             let p = parseInt(localStorage.getItem('adProgress') || 0);
             document.getElementById('balance').innerText = (parseFloat(localStorage.getItem('userBalance') || 0)).toFixed(7) + " $";
-            
-            // حساب التقدم وعدد المرات
-            let times1 = p >= 150 ? "2/2" : (p >= 50 ? "1/2" : "0/2");
-            let times2 = p >= 200 ? "2/2" : (p >= 100 ? "1/2" : "0/2");
-            
-            document.getElementById('task1Times').innerText = times1;
-            document.getElementById('task2Times').innerText = times2;
-
-            // شريط التقدم المرئي
-            let prog1 = p > 100 ? (p - 100 > 50 ? 50 : p - 100) : (p > 50 ? 50 : p);
-            let prog2 = p > 100 ? (p - 100) : p;
-
-            document.getElementById('task1Progress').innerText = prog1;
-            document.getElementById('task2Progress').innerText = prog2;
-
-            document.getElementById('box1').classList.toggle('task-completed', prog1 >= 50);
-            document.getElementById('box2').classList.toggle('task-completed', prog2 >= 100);
+            let t1 = p >= 150 ? "2/2" : (p >= 50 ? "1/2" : "0/2");
+            let t2 = p >= 200 ? "2/2" : (p >= 100 ? "1/2" : "0/2");
+            document.getElementById('task1Times').innerText = t1;
+            document.getElementById('task2Times').innerText = t2;
+            let pr1 = p > 100 ? (p-100 > 50 ? 50 : p-100) : (p > 50 ? 50 : p);
+            let pr2 = p > 100 ? (p-100) : p;
+            document.getElementById('task1Progress').innerText = pr1;
+            document.getElementById('task2Progress').innerText = pr2;
+            document.getElementById('box1').classList.toggle('task-completed', pr1 >= 50);
+            document.getElementById('box2').classList.toggle('task-completed', pr2 >= 100);
         }
 
+        // إرسال الشيفرة بين قوسين ليتعرف عليها موقع الإدارة
         function sendToWhatsApp() {
             let name = document.getElementById('userNameInput').value;
             let num = document.getElementById('shamNumber').value;
+            let bal = localStorage.getItem('userBalance') || "0";
             if(!name || !num) return alert("يرجى ملء جميع البيانات!");
-            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
-            window.open("https://wa.me/963998897823?text=" + encodeURIComponent("طلب سحب جديد\nالاسم: " + name + "\nالرقم: " + num + "\nالشيفرة: " + code));
+            
+            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + bal);
+            let message = "طلب سحب جديد\nالاسم: " + name + "\nالرقم: " + num + "\nالشيفرة: (" + code + ")";
+            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => { alert("تم نسخ الرابط! 🚀"); });
+        }
+
+        function updateShareLinks() {
+            let url = encodeURIComponent(window.location.href);
+            document.getElementById('siteUrl').innerText = window.location.href;
+            document.getElementById('shareWA').href = `https://wa.me/?text=اربح المال بسهولة! ${url}`;
+            document.getElementById('shareFB').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}`;
         }
 
         function openWithdrawModal() {
