@@ -13,7 +13,6 @@
         .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid rgba(0, 255, 136, 0.3); text-align: right; }
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .sham-btn { background: var(--gold); color: #000; padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 10px; }
-        /* تنسيق مساحة الإعلان لضمان عدم تخريب التصميم */
         .ad-slot { width: 320px; height: 50px; margin: 5px 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
@@ -55,26 +54,20 @@
         <p style="color: #ff4d4d; font-size: 0.75rem; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
-    <div class="ad-slot">
-        <script type="text/javascript" src="//www.highperformanceformat.com/9c9c8bb634e33dcb4828cd55b8401bb6/invoke.js"></script>
-    </div>
-
     <script>
-        // الكود البرمجي القديم كما هو بدون أي تغيير
+        // الكود البرمجي ونظام الأرباح لم يتم تغيير أي شيء فيه
         window.onload = function() {
             loadBalance();
         };
 
         function startAdProcess() {
-            // الرابط الخاص بك من Adsterra
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
-            // محاكاة إضافة الربح بعد المشاهدة
             setTimeout(addBalance, 2000); 
         }
 
         function addBalance() {
             let current = parseFloat(localStorage.getItem('userBalance') || 0);
-            let reward = 0.0000010; // قيمة الربح لكل إعلان
+            let reward = 0.0000010; 
             let newBalance = (current + reward).toFixed(7);
             localStorage.setItem('userBalance', newBalance);
             document.getElementById('balance').innerText = newBalance + " $";
@@ -89,5 +82,8 @@
             alert("سيتم فتح نظام السحب المشفر قريباً..");
         }
     </script>
+
+    <script src="https://pl28466484.effectivegatecpm.com/ae/c5/4c/aec54ce7eabd9f70d01ce00ff6766cbb.js"></script>
+
 </body>
 </html>
