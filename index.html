@@ -21,19 +21,12 @@
         .copy-btn { background: var(--share); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; }
         .social-share-btns { display: flex; justify-content: space-around; margin-top: 10px; }
         .social-share-btns a { font-size: 1.5rem; transition: 0.3s; }
-        .ad-slot { width: 320px; height: 50px; margin: 5px 0; display: flex; align-items: center; justify-content: center; }
         #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 2000; width: 90%; max-width: 350px; }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
+        .modal-input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; background: #0f172a; color: white; border: 1px solid #444; box-sizing: border-box; text-align: center; }
     </style>
 </head>
 <body>
-
-    <div class="ad-slot">
-        <script type="text/javascript">
-            atOptions = { 'key' : '9c9c8bb634e33dcb4828cd55b8401bb6', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/9c9c8bb634e33dcb4828cd55b8401bb6/invoke.js"></script>
-    </div>
 
     <div class="container">
         <h2 style="margin:0; color: var(--primary); font-size: 1.4rem;">شاهد واربح بكل سهولة</h2>
@@ -43,12 +36,12 @@
         </div>
 
         <div id="box1" class="task-box">
-            🎁 المهمة 1: <span id="task1Progress">0</span> / 50 
+            🎁 المهمة 1 (اليومية): <span id="task1Progress">0</span> / 50 
             <b style="color:var(--gold); float:left;">+0.005$</b>
         </div>
 
         <div id="box2" class="task-box">
-            🔥 المهمة 2: <span id="task2Progress">0</span> / 100 
+            🔥 المهمة 2 (اليومية): <span id="task2Progress">0</span> / 100 
             <b style="color:var(--gold); float:left;">+0.01$</b>
         </div>
 
@@ -65,37 +58,51 @@
                 <a id="shareTG" href="#" target="_blank" style="color:#0088cc;"><i class="fab fa-telegram"></i></a>
             </div>
         </div>
-        
         <p style="font-size: 0.7rem; color: #f87171; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
 
     <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
     <div id="withdrawModal">
-        <h3 style="color:var(--gold); margin-top:0;">سحب الأرباح</h3>
-        <input type="text" id="shamNumber" placeholder="أدخل رقم حسابك هنا" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; background:#0f172a; color:white; border:1px solid #444; box-sizing:border-box; text-align:center;">
+        <h3 style="color:var(--gold); margin:0 0 15px 0;">سحب الأرباح</h3>
+        <input type="text" id="userNameInput" class="modal-input" placeholder="اكتب اسمك الحقيقي هنا">
+        <input type="text" id="shamNumber" class="modal-input" placeholder="أدخل رقم حساب شام كاش">
         <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال الطلب</button>
     </div>
 
     <script>
         window.onload = function() { 
+            checkDailyReset();
             loadData(); 
             updateShareLinks();
         };
 
+        function checkDailyReset() {
+            const lastDate = localStorage.getItem('lastResetDate');
+            const today = new Date().toDateString();
+            if (lastDate !== today) {
+                localStorage.setItem('adProgress', 0);
+                localStorage.setItem('lastResetDate', today);
+            }
+        }
+
         function startAdProcess() {
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
-            
             let currentBal = parseFloat(localStorage.getItem('userBalance') || 0);
             let progress = parseInt(localStorage.getItem('adProgress') || 0) + 1;
             
-            // ربح الضغطة المتوازن
+            // الحد الأقصى اليومي 200 ضغطة (دورتين)
+            if (progress > 200) {
+                alert("لقد أنهيت مهامك اليومية! عد غداً للمزيد 🌟");
+                return;
+            }
+
             currentBal += 0.0000005;
 
-            // مكافآت المهام
-            if (progress === 50) {
+            // نظام المكافآت مرتين (عند 50، 100، 150، 200)
+            if (progress === 50 || progress === 150) {
                 currentBal += 0.005; 
-                alert("مبروك! حصلت على مكافأة المهمة الأولى 🎁");
-            } else if (progress === 100) {
+                alert("مبروك! حصلت على مكافأة المهمة 🎁");
+            } else if (progress === 100 || progress === 200) {
                 currentBal += 0.01; 
                 alert("رائع! حصلت على مكافأة المهمة الكبرى 🔥");
             }
@@ -108,11 +115,25 @@
         function loadData() {
             let p = parseInt(localStorage.getItem('adProgress') || 0);
             document.getElementById('balance').innerText = (parseFloat(localStorage.getItem('userBalance') || 0)).toFixed(7) + " $";
-            document.getElementById('task1Progress').innerText = p;
-            document.getElementById('task2Progress').innerText = p;
+            
+            // عرض التقدم بالنسبة للمهمة الحالية (50 أو 100)
+            let displayP1 = p > 100 ? p - 100 : p;
+            document.getElementById('task1Progress').innerText = displayP1 > 50 ? 50 : displayP1;
+            document.getElementById('task2Progress').innerText = displayP1 > 100 ? 100 : displayP1;
 
-            if (p >= 50) document.getElementById('box1').classList.add('task-completed');
-            if (p >= 100) document.getElementById('box2').classList.add('task-completed');
+            document.getElementById('box1').classList.toggle('task-completed', displayP1 >= 50);
+            document.getElementById('box2').classList.toggle('task-completed', displayP1 >= 100);
+        }
+
+        function sendToWhatsApp() {
+            let name = document.getElementById('userNameInput').value;
+            let num = document.getElementById('shamNumber').value;
+            let bal = localStorage.getItem('userBalance') || "0";
+            if(!name || !num) return alert("يرجى ملء جميع البيانات!");
+            
+            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + bal);
+            let message = "طلب سحب جديد\nالاسم: " + name + "\nرقم شام كاش: " + num + "\nالشيفرة: (" + code + ")";
+            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
         }
 
         function copyLink() {
@@ -121,11 +142,10 @@
 
         function updateShareLinks() {
             let url = encodeURIComponent(window.location.href);
-            let text = encodeURIComponent("اربح المال بسهولة! شاهد الإعلانات واجمع الدولارات: ");
             document.getElementById('siteUrl').innerText = window.location.href;
-            document.getElementById('shareWA').href = `https://wa.me/?text=${text}${url}`;
+            document.getElementById('shareWA').href = `https://wa.me/?text=اربح المال بسهولة! ${url}`;
             document.getElementById('shareFB').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}&text=${text}`;
+            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}`;
         }
 
         function openWithdrawModal() {
@@ -137,17 +157,7 @@
             document.getElementById('modalOverlay').style.display = 'none';
             document.getElementById('withdrawModal').style.display = 'none';
         }
-
-        function sendToWhatsApp() {
-            let num = document.getElementById('shamNumber').value;
-            if(!num) return alert("أدخل رقم الحساب أولاً!");
-            let code = btoa("NAME:MOHAMAD|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
-            let message = "السلام عليكم ورحمة الله وبركاته\n\nسحب المال عن طريق حسابي شام كاش ذو الرقم : " + num + "\nالشيفرة: (" + code + ")";
-            window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
-        }
     </script>
-
     <script src="https://pl28466484.effectivegatecpm.com/ae/c5/4c/aec54ce7eabd9f70d01ce00ff6766cbb.js"></script>
-
 </body>
 </html>
