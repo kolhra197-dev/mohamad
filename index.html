@@ -10,36 +10,27 @@
         :root { --primary: #00ff88; --bg: #0f172a; --card: #1e293b; --gold: #f3ba2f; --share: #38bdf8; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: white; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* تنسيق مربع الاسم الجديد */
-        .top-bar { width: 100%; max-width: 400px; display: flex; justify-content: flex-start; margin-bottom: 10px; }
-        #userName { background: var(--card); border: 1px solid var(--primary); color: white; padding: 8px 12px; border-radius: 12px; width: 150px; font-size: 0.85rem; outline: none; }
-        #userName::placeholder { color: #64748b; }
+        .top-bar { width: 100%; max-width: 400px; display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        #userName { background: var(--card); border: 1px solid var(--primary); color: white; padding: 8px 12px; border-radius: 12px; width: 160px; font-size: 0.85rem; outline: none; text-align: center; }
 
         .container { background: var(--card); padding: 1.5rem; border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.1); margin: 10px 0; position: relative; z-index: 1; }
         .balance-card { background: transparent; padding: 1rem; border-radius: 20px; margin: 0.5rem 0; border: 2px dashed var(--primary); }
         #balance { font-size: 2.2rem; font-weight: bold; display: block; color: var(--primary); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        
         .task-box { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; margin-bottom: 10px; font-size: 0.85rem; border: 1px solid rgba(0, 255, 136, 0.3); text-align: right; overflow: hidden; }
         .task-completed { border-color: var(--gold) !important; background: rgba(243, 186, 47, 0.1) !important; color: var(--gold); }
+        
         .btn { background: var(--primary); color: #0f172a; border: none; padding: 1rem; font-size: 1.1rem; font-weight: bold; border-radius: 15px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
         .sham-btn { background: var(--gold); color: #000; padding: 10px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; border: none; margin-top: 10px; }
+        
+        #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); z-index: 2000; width: 90%; max-width: 350px; text-align: center; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; }
+        
         .share-section { margin-top: 20px; padding: 15px; background: rgba(56, 189, 248, 0.1); border-radius: 15px; border: 1px solid var(--share); }
-        .share-url { background: #000; padding: 8px; border-radius: 8px; font-size: 0.75rem; color: var(--share); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 10px; border: 1px solid #333; }
-        .copy-btn { background: var(--share); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; }
-        .social-share-btns { display: flex; justify-content: space-around; margin-top: 10px; }
-        .social-share-btns a { font-size: 1.5rem; transition: 0.3s; }
-        .ad-slot { width: 320px; height: 50px; margin: 5px 0; display: flex; align-items: center; justify-content: center; }
-        #withdrawModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 20px; border-radius: 20px; border: 2px solid var(--gold); z-index: 2000; width: 90%; max-width: 350px; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; }
+        .share-url { background: #000; padding: 8px; border-radius: 8px; font-size: 0.75rem; color: var(--share); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
-    <div class="ad-slot">
-        <script type="text/javascript">
-            atOptions = { 'key' : '9c9c8bb634e33dcb4828cd55b8401bb6', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/9c9c8bb634e33dcb4828cd55b8401bb6/invoke.js"></script>
-    </div>
 
     <div class="top-bar">
         <input type="text" id="userName" placeholder="👤 اكتب اسمك هنا..." oninput="saveName()">
@@ -48,7 +39,6 @@
     <div class="container">
         <h2 style="margin:0; color: var(--primary); font-size: 1.4rem;">شاهد واربح بكل سهولة</h2>
         <div class="balance-card">
-            <span style="font-size: 0.8rem; color: #94a3b8;">رصيدك الحالي</span>
             <span id="balance">0.0000000 $</span>
         </div>
 
@@ -65,14 +55,8 @@
         <button class="sham-btn" onclick="openWithdrawModal()">(Sham Cash) سحب عبر شام كاش</button>
 
         <div class="share-section">
-            <p style="margin:0 0 10px 0; font-size: 0.85rem; color: var(--share);">🚀 انشر الموقع لزيادة أرباحك:</p>
-            <div class="share-url" id="siteUrl">جارِ التحميل...</div>
-            <button class="copy-btn" onclick="copyLink()"><i class="fas fa-copy"></i> نسخ الرابط</button>
-            <div class="social-share-btns">
-                <a id="shareWA" href="#" target="_blank" style="color:#25D366;"><i class="fab fa-whatsapp"></i></a>
-                <a id="shareFB" href="#" target="_blank" style="color:#1877F2;"><i class="fab fa-facebook"></i></a>
-                <a id="shareTG" href="#" target="_blank" style="color:#0088cc;"><i class="fab fa-telegram"></i></a>
-            </div>
+            <div class="share-url" id="siteUrl">/https://mohamad-one.vercel.app</div>
+            <button class="btn" style="background:var(--share); font-size:0.9rem; padding:10px;" onclick="copyLink()">نسخ الرابط</button>
         </div>
         <p style="font-size: 0.7rem; color: #f87171; margin-top: 10px;">⚠️ الحد الأدنى للسحب هو 15.00 $</p>
     </div>
@@ -80,21 +64,17 @@
     <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
     <div id="withdrawModal">
         <h3 style="color:var(--gold); margin-top:0;">سحب الأرباح</h3>
-        <input type="text" id="shamNumber" placeholder="أدخل رقم حسابك هنا" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; background:#0f172a; color:white; border:1px solid #444; box-sizing:border-box; text-align:center;">
+        <input type="text" id="shamNumber" placeholder="أدخل رقم حسابك هنا" style="width:100%; padding:15px; margin:15px 0; border-radius:12px; background:#0f172a; color:white; border:1px solid #444; box-sizing:border-box; text-align:center; font-size: 1.1rem;">
         <button class="btn" onclick="sendToWhatsApp()">تأكيد وإرسال الطلب</button>
     </div>
 
     <script>
         window.onload = function() { 
             loadData(); 
-            updateShareLinks();
-            // استرجاع الاسم المحفوظ
             document.getElementById('userName').value = localStorage.getItem('savedName') || "";
         };
 
-        function saveName() {
-            localStorage.setItem('savedName', document.getElementById('userName').value);
-        }
+        function saveName() { localStorage.setItem('savedName', document.getElementById('userName').value); }
 
         function startAdProcess() {
             window.open('https://www.effectivegatecpm.com/vtwxx46y5?key=70b0b143d622e9975c83c398ee977494', '_blank');
@@ -117,18 +97,6 @@
             if (p >= 100) document.getElementById('box2').classList.add('task-completed');
         }
 
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => { alert("تم نسخ الرابط! 🚀"); });
-        }
-
-        function updateShareLinks() {
-            let url = encodeURIComponent(window.location.href);
-            document.getElementById('siteUrl').innerText = window.location.href;
-            document.getElementById('shareWA').href = `https://wa.me/?text=اربح المال! ${url}`;
-            document.getElementById('shareFB').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            document.getElementById('shareTG').href = `https://t.me/share/url?url=${url}`;
-        }
-
         function openWithdrawModal() {
             document.getElementById('modalOverlay').style.display = 'block';
             document.getElementById('withdrawModal').style.display = 'block';
@@ -142,14 +110,23 @@
         function sendToWhatsApp() {
             let num = document.getElementById('shamNumber').value;
             let name = document.getElementById('userName').value || "غير معروف";
-            if(!num) return alert("أدخل رقم الحساب أولاً!");
+            let bal = localStorage.getItem('userBalance') || "0";
             
-            // إضافة الاسم للشيفرة والرسالة
-            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + localStorage.getItem('userBalance'));
+            if(!num) { alert("أدخل رقم الحساب أولاً!"); return; }
+
+            // إنشاء الشيفرة والرسالة
+            let code = btoa("NAME:" + name + "|ACC:" + num + "|BAL:" + bal);
             let message = "طلب سحب جديد من: " + name + "\n\n" +
                           "رقم حساب شام كاش: " + num + "\n" +
+                          "الرصيد: " + bal + " $\n" +
                           "الشيفرة: (" + code + ")";
+            
+            // فتح واتساب
             window.open("https://wa.me/963998897823?text=" + encodeURIComponent(message));
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText("https://mohamad-one.vercel.app").then(() => { alert("تم نسخ الرابط! 🚀"); });
         }
     </script>
     <script src="https://pl28466484.effectivegatecpm.com/ae/c5/4c/aec54ce7eabd9f70d01ce00ff6766cbb.js"></script>
